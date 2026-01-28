@@ -5,27 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Сравнение учебных планов | Б1 Дисциплины</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
   <style>
     :root {
-      /* Строгая цветовая палитра */
-      --math-bg: #f0f9ff;
-      --math-border: #0284c7;
-      --math-accent: #0369a1;
+      /* Modern vibrant color palette */
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      
+      --math-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --math-border: #667eea;
+      --math-accent: #5b51d8;
+      --math-light: rgba(102, 126, 234, 0.1);
 
-      --programming-bg: #fefce8;
-      --programming-border: #ca8a04;
-      --programming-accent: #a16207;
+      --programming-bg: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --programming-border: #f093fb;
+      --programming-accent: #e5507e;
+      --programming-light: rgba(240, 147, 251, 0.1);
 
-      --engineering-bg: #fef2f2;
-      --engineering-border: #dc2626;
-      --engineering-accent: #b91c1c;
+      --engineering-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --engineering-border: #4facfe;
+      --engineering-accent: #3b9dd8;
+      --engineering-light: rgba(79, 172, 254, 0.1);
 
-      --humanities-bg: #f5f3ff;
-      --humanities-border: #7c3aed;
-      --humanities-accent: #6d28d9;
+      --humanities-bg: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      --humanities-border: #43e97b;
+      --humanities-accent: #3ad18a;
+      --humanities-light: rgba(67, 233, 123, 0.1);
 
       --gray-50: #fafafa;
       --gray-100: #f5f5f5;
@@ -38,22 +47,24 @@
       --gray-800: #262626;
       --gray-900: #171717;
 
-      --success: #16a34a;
-      --warning: #ca8a04;
-      --danger: #dc2626;
-      --info: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
 
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
-      --shadow-lg: 0 4px 8px -2px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.08);
-      --shadow-xl: 0 8px 16px -4px rgb(0 0 0 / 0.12), 0 4px 8px -4px rgb(0 0 0 / 0.08);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
-      --radius-sm: 3px;
-      --radius-md: 6px;
-      --radius-lg: 8px;
-      --radius-xl: 12px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
 
-      --transition: all 0.15s ease;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -62,102 +73,204 @@
       box-sizing: border-box;
     }
 
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: var(--gray-800);
-      background: var(--gray-100);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: 400% 400%;
+      animation: gradient-shift 15s ease infinite;
       min-height: 100vh;
-      padding: 24px;
-      line-height: 1.5;
+      padding: 32px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .container {
-      max-width: 1800px;
+      max-width: 1600px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.5s ease;
     }
 
     header {
       text-align: center;
-      margin-bottom: 32px;
-      padding: 32px;
-      background: white;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--gray-200);
+      margin-bottom: 40px;
+      padding: 48px 32px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-2xl);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: slideUp 0.6s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+      background-size: 300% 100%;
+      animation: gradient-shift 3s linear infinite;
     }
 
     h1 {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--gray-900);
-      letter-spacing: -0.02em;
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
     }
 
     .subtitle {
       color: var(--gray-600);
-      font-size: 14px;
-      max-width: 700px;
+      font-size: 16px;
+      max-width: 800px;
       margin: 0 auto;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-weight: 400;
     }
 
     .upload-area {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 56px 40px;
       text-align: center;
-      box-shadow: var(--shadow-md);
-      margin-bottom: 32px;
-      border: 2px dashed var(--gray-300);
+      box-shadow: var(--shadow-xl);
+      margin-bottom: 40px;
+      border: 3px dashed rgba(102, 126, 234, 0.3);
       transition: var(--transition);
       cursor: pointer;
       position: relative;
+      animation: slideUp 0.6s ease 0.1s both;
+    }
+
+    .upload-area::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      padding: 3px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .upload-area:hover::before {
+      opacity: 1;
+    }
+
+    .upload-area:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-2xl);
+      border-color: rgba(102, 126, 234, 0.5);
     }
 
     .upload-area.drag-over {
-      border-color: var(--info);
-      background: var(--gray-50);
+      border-color: var(--primary);
+      background: rgba(102, 126, 234, 0.05);
       border-style: solid;
+      transform: scale(1.02);
     }
 
     .upload-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 20px;
-      background: var(--gray-100);
-      border-radius: var(--radius-md);
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: var(--radius-lg);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      color: var(--gray-600);
-      border: 1px solid var(--gray-200);
+      font-size: 36px;
+      color: white;
+      box-shadow: var(--shadow-lg);
+      animation: float 3s ease-in-out infinite;
     }
 
     .upload-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
       color: var(--gray-900);
+      letter-spacing: -0.02em;
     }
 
     .upload-instructions {
       color: var(--gray-600);
-      font-size: 14px;
-      margin-bottom: 20px;
-      line-height: 1.5;
+      font-size: 16px;
+      margin-bottom: 24px;
+      line-height: 1.6;
     }
 
     .upload-hint {
-      background: var(--gray-50);
-      border-left: 3px solid var(--gray-400);
-      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
       text-align: left;
-      margin-top: 16px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
       color: var(--gray-700);
+      line-height: 1.6;
     }
 
     .file-input {
@@ -172,107 +285,153 @@
 
     .files-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 32px;
+      margin-bottom: 40px;
+      animation: slideUp 0.6s ease 0.2s both;
     }
 
     .file-card {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--gray-200);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gray-300);
       transition: var(--transition);
     }
 
+    .file-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-2xl);
+    }
+
+    .file-card.uploaded::before {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
     .file-card.uploaded {
-      border-color: var(--success);
-      border-width: 2px;
-      box-shadow: var(--shadow-md);
+      border-color: rgba(16, 185, 129, 0.3);
     }
 
     .file-card-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--gray-200);
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--gray-100);
     }
 
     .file-number {
-      width: 28px;
-      height: 28px;
-      background: var(--gray-200);
-      border-radius: var(--radius-sm);
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      font-size: 13px;
+      font-weight: 700;
+      font-size: 20px;
       color: var(--gray-700);
       flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
     }
 
     .file-card.uploaded .file-number {
-      background: var(--success);
+      background: linear-gradient(135deg, #10b981, #059669);
       color: white;
+      animation: pulse 2s ease infinite;
     }
 
     .file-name {
-      font-weight: 500;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 16px;
       color: var(--gray-900);
       word-break: break-word;
+      line-height: 1.4;
     }
 
     .file-meta {
       display: flex;
       justify-content: space-between;
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--gray-600);
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 500;
     }
 
     .compare-section {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 40px;
       text-align: center;
-      box-shadow: var(--shadow-md);
-      margin-bottom: 32px;
-      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-xl);
+      margin-bottom: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: slideUp 0.6s ease 0.3s both;
     }
 
     .compare-btn {
-      background: var(--gray-900);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       border: none;
-      padding: 14px 32px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: var(--radius-md);
+      padding: 18px 48px;
+      font-size: 17px;
+      font-weight: 700;
+      border-radius: var(--radius-lg);
       cursor: pointer;
       transition: var(--transition);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-lg);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      letter-spacing: 0.01em;
+      gap: 12px;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .compare-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .compare-btn:hover::before {
+      left: 100%;
     }
 
     .compare-btn:hover:not(:disabled) {
-      background: var(--gray-800);
-      box-shadow: var(--shadow-md);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: var(--shadow-2xl);
     }
 
     .compare-btn:active:not(:disabled) {
-      transform: translateY(1px);
+      transform: translateY(0) scale(0.98);
     }
 
     .compare-btn:disabled {
-      background: var(--gray-300);
+      background: linear-gradient(135deg, var(--gray-300), var(--gray-400));
       color: var(--gray-500);
       cursor: not-allowed;
       box-shadow: none;
@@ -280,121 +439,177 @@
 
     .results-container {
       display: none;
-      gap: 24px;
-      margin-top: 24px;
+      gap: 32px;
+      margin-top: 32px;
+      animation: fadeIn 0.5s ease;
     }
 
     .category-block {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-md);
-      border-left: 4px solid transparent;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      margin-bottom: 32px;
       transition: var(--transition);
-      border: 1px solid var(--gray-200);
-      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .category-math { border-left-color: var(--math-border); }
-    .category-programming { border-left-color: var(--programming-border); }
-    .category-engineering { border-left-color: var(--engineering-border); }
-    .category-humanities { border-left-color: var(--humanities-border); }
+    .category-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      transition: var(--transition);
+    }
+
+    .category-math::before { background: var(--math-bg); }
+    .category-programming::before { background: var(--programming-bg); }
+    .category-engineering::before { background: var(--engineering-bg); }
+    .category-humanities::before { background: var(--humanities-bg); }
+
+    .category-block:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-2xl);
+    }
 
     .category-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--gray-200);
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--gray-100);
     }
 
     .category-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-sm);
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 24px;
+      font-weight: 700;
       color: white;
       flex-shrink: 0;
       letter-spacing: 0;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
     }
 
-    .category-math .category-icon { background: var(--math-accent); }
-    .category-programming .category-icon { background: var(--programming-accent); }
-    .category-engineering .category-icon { background: var(--engineering-accent); }
-    .category-humanities .category-icon { background: var(--humanities-accent); }
+    .category-math .category-icon { background: var(--math-bg); }
+    .category-programming .category-icon { background: var(--programming-bg); }
+    .category-engineering .category-icon { background: var(--engineering-bg); }
+    .category-humanities .category-icon { background: var(--humanities-bg); }
+
+    .category-block:hover .category-icon {
+      transform: rotate(5deg) scale(1.1);
+    }
 
     .category-title {
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 26px;
+      font-weight: 700;
       color: var(--gray-900);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
     .plans-comparison {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 20px;
+      gap: 24px;
+      margin-top: 24px;
     }
 
     .plan-column {
       background: var(--gray-50);
-      border-radius: var(--radius-md);
-      padding: 20px;
-      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 2px solid var(--gray-100);
+      transition: var(--transition);
+    }
+
+    .plan-column:hover {
+      border-color: var(--gray-200);
+      box-shadow: var(--shadow-md);
     }
 
     .plan-header {
       text-align: center;
-      padding: 12px;
-      margin-bottom: 16px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      font-size: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border: 1px solid;
+      letter-spacing: 0.1em;
+      border: 2px solid;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
     }
 
-    .category-math .plan-header { background: var(--math-bg); color: var(--math-accent); border-color: var(--math-border); }
-    .category-programming .plan-header { background: var(--programming-bg); color: var(--programming-accent); border-color: var(--programming-border); }
-    .category-engineering .plan-header { background: var(--engineering-bg); color: var(--engineering-accent); border-color: var(--engineering-border); }
-    .category-humanities .plan-header { background: var(--humanities-bg); color: var(--humanities-accent); border-color: var(--humanities-border); }
+    .plan-header:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .category-math .plan-header { 
+      background: var(--math-light); 
+      color: var(--math-accent); 
+      border-color: var(--math-border); 
+    }
+    .category-programming .plan-header { 
+      background: var(--programming-light); 
+      color: var(--programming-accent); 
+      border-color: var(--programming-border); 
+    }
+    .category-engineering .plan-header { 
+      background: var(--engineering-light); 
+      color: var(--engineering-accent); 
+      border-color: var(--engineering-border); 
+    }
+    .category-humanities .plan-header { 
+      background: var(--humanities-light); 
+      color: var(--humanities-accent); 
+      border-color: var(--humanities-border); 
+    }
 
     .subjects-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       background: white;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       overflow: hidden;
-      border: 1px solid var(--gray-200);
+      border: 2px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
     }
 
     .subjects-table thead {
-      background: var(--gray-50);
+      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
     }
 
     .subjects-table th {
-      padding: 12px;
+      padding: 16px;
       text-align: left;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
       color: var(--gray-700);
       border-bottom: 2px solid var(--gray-200);
     }
 
     .subjects-table td {
-      padding: 12px;
-      border-bottom: 1px solid var(--gray-200);
+      padding: 16px;
+      border-bottom: 1px solid var(--gray-100);
       vertical-align: top;
       background: white;
+      transition: var(--transition-fast);
     }
 
     .subjects-table tbody tr:last-child td {
@@ -405,17 +620,13 @@
       background: var(--gray-50);
     }
 
-    .subject-row.matched {
-      background: rgba(37, 99, 235, 0.05);
-    }
-
     .subject-row.matched td {
-      background: rgba(37, 99, 235, 0.05);
-      border-left: 3px solid var(--info);
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), transparent 95%);
+      border-left: 4px solid var(--info);
     }
 
     .subject-row.matched:hover td {
-      background: rgba(37, 99, 235, 0.08);
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.12), transparent 95%);
     }
 
     .subject-row.unique {
@@ -427,53 +638,80 @@
     }
 
     .subject-name {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--gray-900);
-      font-size: 13px;
-      margin-bottom: 6px;
-      line-height: 1.4;
+      font-size: 14px;
+      margin-bottom: 8px;
+      line-height: 1.5;
     }
 
     .department-info {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .department-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background: var(--gray-100);
       color: var(--gray-700);
-      padding: 4px 8px;
+      padding: 6px 12px;
       border-radius: var(--radius-sm);
-      font-size: 11px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 600;
       border: 1px solid var(--gray-200);
+      transition: var(--transition-fast);
     }
 
-    .category-math .department-badge { background: var(--math-bg); color: var(--math-accent); border-color: var(--math-border); }
-    .category-programming .department-badge { background: var(--programming-bg); color: var(--programming-accent); border-color: var(--programming-border); }
-    .category-engineering .department-badge { background: var(--engineering-bg); color: var(--engineering-accent); border-color: var(--engineering-border); }
-    .category-humanities .department-badge { background: var(--humanities-bg); color: var(--humanities-accent); border-color: var(--humanities-border); }
+    .department-badge:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .category-math .department-badge { 
+      background: var(--math-light); 
+      color: var(--math-accent); 
+      border-color: var(--math-border); 
+    }
+    .category-programming .department-badge { 
+      background: var(--programming-light); 
+      color: var(--programming-accent); 
+      border-color: var(--programming-border); 
+    }
+    .category-engineering .department-badge { 
+      background: var(--engineering-light); 
+      color: var(--engineering-accent); 
+      border-color: var(--engineering-border); 
+    }
+    .category-humanities .department-badge { 
+      background: var(--humanities-light); 
+      color: var(--humanities-accent); 
+      border-color: var(--humanities-border); 
+    }
 
     .info-icon {
-      width: 16px;
-      height: 16px;
-      background: var(--info);
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, var(--info), #2563eb);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       cursor: help;
       flex-shrink: 0;
       transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
 
     .info-icon:hover {
-      background: #1e40af;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transform: scale(1.2) rotate(12deg);
+      box-shadow: var(--shadow-md);
     }
 
     .tooltip {
@@ -483,22 +721,23 @@
 
     .tooltip .tooltip-text {
       visibility: hidden;
-      width: 280px;
+      width: 300px;
       background: var(--gray-900);
       color: white;
       text-align: left;
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 16px;
       position: absolute;
       z-index: 1000;
-      bottom: 125%;
+      bottom: 150%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(10px);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-size: 13px;
-      line-height: 1.5;
-      box-shadow: var(--shadow-lg);
+      line-height: 1.6;
+      box-shadow: var(--shadow-2xl);
+      font-weight: 400;
     }
 
     .tooltip .tooltip-text::after {
@@ -506,8 +745,8 @@
       position: absolute;
       top: 100%;
       left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
+      margin-left: -8px;
+      border-width: 8px;
       border-style: solid;
       border-color: var(--gray-900) transparent transparent transparent;
     }
@@ -515,14 +754,16 @@
     .tooltip:hover .tooltip-text {
       visibility: visible;
       opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .hours-cell {
-      font-weight: 600;
+      font-weight: 700;
       text-align: right;
-      font-size: 13px;
-      min-width: 60px;
+      font-size: 15px;
+      min-width: 70px;
       font-variant-numeric: tabular-nums;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .category-math .hours-cell { color: var(--math-accent); }
@@ -531,95 +772,116 @@
     .category-humanities .hours-cell { color: var(--humanities-accent); }
 
     .download-section {
-      background: white;
-      border-radius: var(--radius-lg);
-      padding: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 40px;
       text-align: center;
-      box-shadow: var(--shadow-md);
-      margin-top: 32px;
-      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-xl);
+      margin-top: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: slideUp 0.6s ease 0.4s both;
     }
 
     .download-btn {
       background: white;
       color: var(--gray-800);
-      border: 1px solid var(--gray-300);
-      padding: 12px 24px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: var(--radius-md);
+      border: 2px solid var(--gray-300);
+      padding: 16px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius-lg);
       cursor: pointer;
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow-sm);
+      gap: 12px;
+      box-shadow: var(--shadow-md);
     }
 
     .download-btn:hover {
       background: var(--gray-50);
-      border-color: var(--gray-400);
-      box-shadow: var(--shadow-md);
+      border-color: var(--gray-500);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .download-btn:active {
+      transform: translateY(0);
     }
 
     .status-bar {
-      background: white;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
       color: var(--gray-800);
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
-      margin: 20px 0;
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      margin: 24px 0;
       text-align: center;
-      font-weight: 500;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 15px;
       display: none;
-      box-shadow: var(--shadow-sm);
-      border-left: 3px solid transparent;
-      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-lg);
+      border: 2px solid transparent;
+      animation: slideUp 0.3s ease;
     }
 
     .status-bar.error {
-      background: rgba(220, 38, 38, 0.05);
+      background: rgba(239, 68, 68, 0.1);
       color: var(--danger);
-      border-left-color: var(--danger);
+      border-color: var(--danger);
     }
 
     .status-bar.success {
-      background: rgba(22, 163, 74, 0.05);
+      background: rgba(16, 185, 129, 0.1);
       color: var(--success);
-      border-left-color: var(--success);
+      border-color: var(--success);
     }
 
     .empty-state {
       text-align: center;
-      padding: 32px 24px;
+      padding: 48px 24px;
       color: var(--gray-500);
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     .empty-state-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      opacity: 0.4;
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+      animation: float 3s ease-in-out infinite;
     }
 
     .summary-total {
-      background: var(--gray-50);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--gray-50), white);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
       text-align: center;
-      font-weight: 500;
-      font-size: 13px;
-      border: 1px solid var(--gray-200);
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid var(--gray-200);
       color: var(--gray-700);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .summary-total:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
     .summary-total-value {
-      font-size: 18px;
-      font-weight: 600;
-      margin-top: 6px;
-      color: var(--gray-900);
+      font-size: 28px;
+      font-weight: 800;
+      margin-top: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       font-variant-numeric: tabular-nums;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     @media (max-width: 1200px) {
@@ -630,30 +892,34 @@
 
     @media (max-width: 768px) {
       body {
-        padding: 16px;
+        padding: 20px;
       }
 
       header {
-        padding: 24px 20px;
+        padding: 32px 24px;
       }
 
       h1 {
-        font-size: 24px;
+        font-size: 32px;
+      }
+
+      .subtitle {
+        font-size: 15px;
       }
 
       .upload-area {
-        padding: 32px 20px;
+        padding: 40px 24px;
       }
 
       .upload-icon {
-        width: 56px;
-        height: 56px;
-        font-size: 24px;
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
       }
 
       .files-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
       }
 
       .category-header {
@@ -662,962 +928,478 @@
       }
 
       .category-title {
-        font-size: 18px;
+        font-size: 22px;
       }
 
       .compare-btn {
         width: 100%;
-        padding: 14px;
+        padding: 16px;
       }
 
       .subjects-table {
-        font-size: 12px;
+        font-size: 13px;
         display: block;
         overflow-x: auto;
       }
 
       .subjects-table th,
       .subjects-table td {
-        padding: 10px 8px;
+        padding: 12px 10px;
       }
 
       .plans-comparison {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
       }
+
+      .category-block {
+        padding: 24px;
+      }
+
+      .plan-column {
+        padding: 20px;
+      }
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Сравнение учебных планов Б1</h1>
-      <p class="subtitle">Загрузите два файла формата Б1 (Дисциплины) для сравнения. Общие предметы выделяются цветом, информация о кафедрах доступна по значку (i).</p>
+      <h1>🎓 Сравнение учебных планов Б1</h1>
+      <p class="subtitle">Загрузите два файла формата Б1 (Дисциплины) для детального сравнения. Общие предметы будут выделены, информация о кафедрах доступна по клику на значок (i).</p>
     </header>
 
     <div class="upload-area" id="dropZone">
       <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls" multiple>
-      <div class="upload-icon">📄</div>
-      <h2 class="upload-title">Перетащите файлы сюда</h2>
-      <p class="upload-instructions">Поддерживаются только файлы формата Б1 (Дисциплины). Можно загрузить сразу два файла или по одному.</p>
-      <p class="upload-hint">Примечание: файлы Б2/Б3 (практика, ГИА) не поддерживаются для сравнения</p>
+      <div class="upload-icon">📁</div>
+      <div class="upload-title">Перетащите файлы сюда</div>
+      <div class="upload-instructions">или нажмите для выбора файлов (.xlsx, .xls)</div>
+      <div class="upload-hint">
+        <strong>💡 Подсказка:</strong> Вы можете загрузить до 2 файлов одновременно. Файлы должны содержать листы «Б1», с информацией о дисциплинах и кафедрах.
+      </div>
     </div>
 
-    <div class="files-grid" id="filesGrid">
-      <div class="file-card" id="fileCard1">
+    <div class="files-grid" id="fileCards">
+      <div class="file-card" id="file1Card">
         <div class="file-card-header">
           <div class="file-number">1</div>
           <div class="file-name">Файл не загружен</div>
         </div>
         <div class="file-meta">
-          <span>—</span>
-          <span>—</span>
+          <span id="file1Meta">Ожидание загрузки...</span>
         </div>
       </div>
-      <div class="file-card" id="fileCard2">
+
+      <div class="file-card" id="file2Card">
         <div class="file-card-header">
           <div class="file-number">2</div>
           <div class="file-name">Файл не загружен</div>
         </div>
         <div class="file-meta">
-          <span>—</span>
-          <span>—</span>
+          <span id="file2Meta">Ожидание загрузки...</span>
         </div>
       </div>
     </div>
 
     <div class="compare-section">
-      <button class="compare-btn" id="compareBtn" disabled>
-        Сравнить планы
+      <button id="compareBtn" class="compare-btn" disabled>
+        <span>🔍 Сравнить учебные планы</span>
       </button>
     </div>
 
-    <div class="status-bar" id="statusBar"></div>
+    <div id="statusBar" class="status-bar"></div>
 
-    <div class="results-container" id="resultsContainer">
-      <!-- Математика -->
-      <div class="category-block category-math">
-        <div class="category-header">
-          <div class="category-icon">M</div>
-          <h2 class="category-title">Математика</h2>
-        </div>
-        <div class="summary-total">
-          Разница по модулю: <span class="summary-total-value" id="math-diff-abs">0</span> часов
-        </div>
-        <div class="plans-comparison">
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №1</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="math-body-1">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №2</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="math-body-2">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Программирование -->
-      <div class="category-block category-programming">
-        <div class="category-header">
-          <div class="category-icon">П</div>
-          <h2 class="category-title">Программирование</h2>
-        </div>
-        <div class="summary-total">
-          Разница по модулю: <span class="summary-total-value" id="programming-diff-abs">0</span> часов
-        </div>
-        <div class="plans-comparison">
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №1</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="programming-body-1">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №2</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="programming-body-2">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Инженерия -->
-      <div class="category-block category-engineering">
-        <div class="category-header">
-          <div class="category-icon">И</div>
-          <h2 class="category-title">Инженерия</h2>
-        </div>
-        <div class="summary-total">
-          Разница по модулю: <span class="summary-total-value" id="engineering-diff-abs">0</span> часов
-        </div>
-        <div class="plans-comparison">
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №1</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="engineering-body-1">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №2</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="engineering-body-2">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Гуманитарные предметы -->
-      <div class="category-block category-humanities">
-        <div class="category-header">
-          <div class="category-icon">Г</div>
-          <h2 class="category-title">Гуманитарные предметы</h2>
-        </div>
-        <div class="summary-total">
-          Разница по модулю: <span class="summary-total-value" id="humanities-diff-abs">0</span> часов
-        </div>
-        <div class="plans-comparison">
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №1</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="humanities-body-1">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="plan-column">
-            <div class="plan-header">ПЛАН №2</div>
-            <table class="subjects-table">
-              <thead>
-                <tr>
-                  <th>Дисциплина</th>
-                  <th>Кафедра</th>
-                  <th>Часы</th>
-                </tr>
-              </thead>
-              <tbody id="humanities-body-2">
-                <tr>
-                  <td colspan="3" class="empty-state">
-                    <div class="empty-state-icon">—</div>
-                    <p>Загрузите файлы</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="results-container" id="resultsContainer"></div>
 
     <div class="download-section" id="downloadSection" style="display: none;">
-      <button class="download-btn" id="downloadBtn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        Скачать результаты в Excel
+      <button id="downloadBtn" class="download-btn">
+        <span>📥 Скачать результаты сравнения (Excel)</span>
       </button>
     </div>
   </div>
 
   <script>
-    // Информация о кафедрах
-    const DEPARTMENT_INFO = {
-      // Математика
-      'ФН': 'Фундаментальные науки - математика',
-      'ФН1': 'Фундаментальные науки - математика',
-      'ФН12': 'Фундаментальные науки - математика',
+    let file1Data = null;
+    let file2Data = null;
+    let comparisonResults = null;
 
-      // Программирование
-      'ИУ': 'Информатика и системы управления - программирование',
-      'ИУ5': 'Информатика и системы управления - программирование',
-      'ИУ9': 'Информатика и системы управления - программирование',
-      'ЮР': 'Кафедра «Безопасность в цифровом мире» - программирование',
-
-      // Инженерия
-      'ИБМ': 'Инженерный бизнес и менеджмент - инженерия',
-      'ИБМ2': 'Инженерный бизнес и менеджмент - инженерия',
-      'ИБМ3': 'Инженерный бизнес и менеджмент - инженерия',
-      'ИБМ6': 'Инженерный бизнес и менеджмент - инженерия',
-      'МТ': 'Машиностроительные технологии - инженерия',
-      'СМ': 'Специальное машиностроение - инженерия',
-      'ПИШ': 'Передовая инженерная школа - инженерия',
-      'БМТ': 'Биомедицинская техника - инженерия',
-      'РЛ': 'Радиоэлектроника и лазерная техника - инженерия',
-      'Э': 'Энергомашиностроение - инженерия',
-      'Э9': 'Энергомашиностроение - инженерия',
-      'РК': 'Робототехника и комплексная автоматизация - инженерия',
-      'РК3': 'Робототехника и комплексная автоматизация - инженерия',
-      'МТКП': 'Московский техникум космического приборостроения - инженерия',
-
-      // Гуманитарные предметы
-      'Л': 'Лингвистика - гуманитарные предметы',
-      'Л2': 'Лингвистика - гуманитарные предметы',
-      'Л4': 'Лингвистика - гуманитарные предметы',
-      'СГН': 'Социальные и гуманитарные науки - гуманитарные предметы',
-      'СГН1': 'Социальные и гуманитарные науки - гуманитарные предметы',
-      'СГН2': 'Социальные и гуманитарные науки - гуманитарные предметы',
-      'СГН3': 'Социальные и гуманитарные науки - гуманитарные предметы',
-      'СГН4': 'Социальные и гуманитарные науки - гуманитарные предметы',
-      'ВУЦ': 'Военный учебный центр - гуманитарные предметы',
-      'ГУИМЦ': 'Головной учебно-исследовательский и методический центр профессиональной реабилитации лиц с ограниченными возможностями здоровья - гуманитарные предметы',
-      'ФОФ': 'Физкультурно-оздоровительный - гуманитарные предметы',
-      'ИСОТ': 'Институт современных образовательных технологий - гуманитарные предметы',
-      'ФВ': 'Физическая культура и спорт - гуманитарные предметы'
-    };
-
-    // Обновлённая классификация кафедр
-    const DEPARTMENT_CATEGORIES = {
-      // Математика
-      'ФН': 'math',
-      'ФН1': 'math',
-      'ФН12': 'math',
-
-      // Программирование
-      'ИУ': 'programming',
-      'ИУ5': 'programming',
-      'ИУ9': 'programming',
-      'ЮР': 'programming',
-
-      // Инженерия
-      'ИБМ': 'engineering',
-      'ИБМ2': 'engineering',
-      'ИБМ3': 'engineering',
-      'ИБМ6': 'engineering',
-      'МТ': 'engineering',
-      'СМ': 'engineering',
-      'ПИШ': 'engineering',
-      'БМТ': 'engineering',
-      'РЛ': 'engineering',
-      'Э': 'engineering',
-      'Э9': 'engineering',
-      'РК': 'engineering',
-      'РК3': 'engineering',
-      'МТКП': 'engineering',
-
-      // Гуманитарные предметы
-      'Л': 'humanities',
-      'Л2': 'humanities',
-      'Л4': 'humanities',
-      'СГН': 'humanities',
-      'СГН1': 'humanities',
-      'СГН2': 'humanities',
-      'СГН3': 'humanities',
-      'СГН4': 'humanities',
-      'ВУЦ': 'humanities',
-      'ГУИМЦ': 'humanities',
-      'ФОФ': 'humanities',
-      'ИСОТ': 'humanities',
-      'ФВ': 'humanities'
-    };
-
-    // Состояние приложения
-    let files = [null, null];
-    let plansData = [null, null];
-
-    // DOM элементы
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
-    const fileCards = [
-      document.getElementById('fileCard1'),
-      document.getElementById('fileCard2')
-    ];
     const compareBtn = document.getElementById('compareBtn');
     const resultsContainer = document.getElementById('resultsContainer');
-    const downloadSection = document.getElementById('downloadSection');
     const statusBar = document.getElementById('statusBar');
+    const downloadSection = document.getElementById('downloadSection');
 
-    // Инициализация событий
-    setupDragAndDrop();
-    fileInput.addEventListener('change', handleFileSelect);
-    compareBtn.addEventListener('click', comparePlans);
-    document.getElementById('downloadBtn').addEventListener('click', downloadResults);
+    dropZone.addEventListener('click', () => fileInput.click());
+    
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
 
-    function setupDragAndDrop() {
-      ['dragover', 'dragenter'].forEach(event => {
-        dropZone.addEventListener(event, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.add('drag-over');
-        });
-      });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
 
-      ['dragleave', 'dragend'].forEach(event => {
-        dropZone.addEventListener(event, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.remove('drag-over');
-        });
-      });
-
-      dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.classList.remove('drag-over');
-
-        const droppedFiles = Array.from(e.dataTransfer.files).filter(file =>
-          file.name.toLowerCase().endsWith('.xlsx') || file.name.toLowerCase().endsWith('.xls')
-        );
-
-        if (droppedFiles.length === 0) {
-          showStatus('Перетащите файлы формата Excel (.xlsx или .xls)', 'error');
-          return;
-        }
-
-        if (droppedFiles.length > 2) {
-          showStatus('Можно загрузить максимум 2 файла', 'error');
-          return;
-        }
-
-        resetState();
-
-        droppedFiles.forEach((file, index) => {
-          processFile(file, index);
-        });
-
-        compareBtn.disabled = droppedFiles.length < 2;
-      });
-    }
-
-    function resetState() {
-      files = [null, null];
-      plansData = [null, null];
-      fileCards.forEach(card => {
-        card.classList.remove('uploaded');
-        card.querySelector('.file-name').textContent = 'Файл не загружен';
-        card.querySelector('.file-meta').innerHTML = '<span>—</span><span>—</span>';
-      });
-      resultsContainer.style.display = 'none';
-      downloadSection.style.display = 'none';
-    }
-
-    function handleFileSelect(e) {
-      const selectedFiles = Array.from(e.target.files);
-
-      if (selectedFiles.length === 0) return;
-
-      if (selectedFiles.length > 2) {
-        showStatus('Можно выбрать максимум 2 файла', 'error');
-        e.target.value = '';
-        return;
-      }
-
-      resetState();
-
-      selectedFiles.forEach((file, index) => {
-        processFile(file, index);
-      });
-
-      compareBtn.disabled = selectedFiles.length < 2;
-    }
-
-    function processFile(file, index) {
-      files[index] = file;
-
-      const fileNameEl = fileCards[index].querySelector('.file-name');
-      const fileMetaEl = fileCards[index].querySelector('.file-meta');
-      fileNameEl.textContent = file.name;
-      fileMetaEl.innerHTML = `<span>${formatFileSize(file.size)}</span><span>Excel</span>`;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-
-          const jsonData = XLSX.utils.sheet_to_json(firstSheet, {
-            header: 1,
-            defval: '',
-            raw: false
-          });
-
-          plansData[index] = parsePlanData(jsonData, file.name, index + 1);
-          fileCards[index].classList.add('uploaded');
-
-          showStatus(`Файл "${file.name}" успешно загружен`, 'success');
-        } catch (error) {
-          showStatus(`Ошибка при обработке файла "${file.name}": ${error.message}`, 'error');
-          console.error('Ошибка чтения файла:', error);
-          files[index] = null;
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    function formatFileSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-    }
-
-    function parsePlanData(rawData, filename, planNumber) {
-      const isB1 = rawData.some(row =>
-        Array.isArray(row) && row.some(cell =>
-          typeof cell === 'string' &&
-          (cell.trim().toUpperCase().includes('Б1') || cell.trim().toUpperCase().includes('ДИСЦИПЛИНЫ'))
-        )
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const files = Array.from(e.dataTransfer.files).filter(f => 
+        f.name.endsWith('.xlsx') || f.name.endsWith('.xls')
       );
-
-      if (!isB1) {
-        throw new Error(`Файл "${filename}" не является учебным планом формата Б1 (Дисциплины).`);
+      if (files.length > 0) {
+        handleFiles(files);
       }
+    });
 
-      let startIndex = 0;
-      for (let i = 0; i < rawData.length; i++) {
-        const row = rawData[i];
-        if (Array.isArray(row) && row.length > 0 &&
-            typeof row[0] === 'number' && row[0] >= 1 && row[0] <= 300) {
-          startIndex = i;
-          break;
-        }
-      }
+    fileInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      handleFiles(files);
+    });
 
-      const disciplines = [];
-
-      for (let i = startIndex; i < rawData.length; i++) {
-        const row = rawData[i];
-
-        if (!row || row.length === 0) continue;
-
-        if (typeof row[0] === 'string' &&
-            (row[0].toLowerCase().includes('часть') ||
-             row[0].toLowerCase().includes('блок') ||
-             row[0].toLowerCase().includes('дисциплины по выбору'))) {
-          continue;
-        }
-
-        const number = row[0];
-        const name = row[1] ? row[1].toString().trim() : '';
-        const department = row[2] ? row[2].toString().trim() : '';
-        const totalHours = row[4] ? parseInt(row[4]) : 0;
-
-        if (!name || name.length < 3 || !totalHours || isNaN(totalHours) || totalHours < 10) {
-          continue;
-        }
-
-        const category = classifyDepartment(department);
-
-        disciplines.push({
-          number,
-          name,
-          department,
-          totalHours,
-          category,
-          key: generateDisciplineKey(name, department)
-        });
-      }
-
-      return {
-        filename,
-        planNumber,
-        disciplines,
-        totals: calculateTotals(disciplines)
-      };
-    }
-
-    function generateDisciplineKey(name, department) {
-      const normName = name.toLowerCase().replace(/\s+/g, ' ').replace(/ё/g, 'е').trim();
-      const normDept = department.toLowerCase().replace(/\s+/g, '').replace(/\d+$/, '');
-      return `${normName}|${normDept}`;
-    }
-
-    function classifyDepartment(deptCode) {
-      if (!deptCode || deptCode === '') return 'humanities';
-
-      if (DEPARTMENT_CATEGORIES[deptCode]) {
-        return DEPARTMENT_CATEGORIES[deptCode];
-      }
-
-      const prefix = deptCode.replace(/\d+$/, '');
-      if (prefix && DEPARTMENT_CATEGORIES[prefix]) {
-        return DEPARTMENT_CATEGORIES[prefix];
-      }
-
-      return 'engineering';
-    }
-
-    function calculateTotals(disciplines) {
-      const totals = {
-        math: { count: 0, hours: 0 },
-        programming: { count: 0, hours: 0 },
-        engineering: { count: 0, hours: 0 },
-        humanities: { count: 0, hours: 0 }
-      };
-
-      disciplines.forEach(disc => {
-        if (totals[disc.category]) {
-          totals[disc.category].count++;
-          totals[disc.category].hours += disc.totalHours;
-        }
-      });
-
-      return totals;
-    }
-
-    function comparePlans() {
-      if (!plansData[0] || !plansData[1]) {
-        showStatus('Загрузите оба файла для сравнения', 'error');
+    function handleFiles(files) {
+      if (files.length > 2) {
+        showStatus('Можно загрузить максимум 2 файла', 'error');
         return;
       }
 
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            
+            if (index === 0) {
+              file1Data = { workbook, name: file.name };
+              updateFileCard(1, file.name, true);
+            } else {
+              file2Data = { workbook, name: file.name };
+              updateFileCard(2, file.name, true);
+            }
+
+            if (file1Data && file2Data) {
+              compareBtn.disabled = false;
+            }
+          } catch (error) {
+            showStatus(`Ошибка при чтении файла ${file.name}: ${error.message}`, 'error');
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    function updateFileCard(fileNumber, fileName, uploaded) {
+      const card = document.getElementById(`file${fileNumber}Card`);
+      const nameEl = card.querySelector('.file-name');
+      const metaEl = document.getElementById(`file${fileNumber}Meta`);
+      
+      nameEl.textContent = fileName;
+      metaEl.textContent = uploaded ? '✓ Загружен успешно' : 'Ожидание загрузки...';
+      
+      if (uploaded) {
+        card.classList.add('uploaded');
+      }
+    }
+
+    function showStatus(message, type) {
+      statusBar.textContent = message;
+      statusBar.className = `status-bar ${type}`;
+      statusBar.style.display = 'block';
+      setTimeout(() => {
+        statusBar.style.display = 'none';
+      }, 5000);
+    }
+
+    compareBtn.addEventListener('click', () => {
       try {
-        resultsContainer.style.display = 'grid';
-        downloadSection.style.display = 'block';
+        compareBtn.innerHTML = '<span class="loading"></span><span>Сравнение...</span>';
+        compareBtn.disabled = true;
 
-        generateComparisonTables();
-
-        resultsContainer.scrollIntoView({ behavior: 'smooth' });
-
-        showStatus(`Сравнение выполнено: "${plansData[0].filename}" vs "${plansData[1].filename}"`, 'success');
+        setTimeout(() => {
+          const results = compareFiles(file1Data, file2Data);
+          displayResults(results);
+          comparisonResults = results;
+          
+          compareBtn.innerHTML = '<span>🔍 Сравнить учебные планы</span>';
+          compareBtn.disabled = false;
+          
+          showStatus('Сравнение завершено успешно!', 'success');
+          downloadSection.style.display = 'block';
+        }, 500);
       } catch (error) {
         showStatus(`Ошибка при сравнении: ${error.message}`, 'error');
-        console.error('Ошибка сравнения:', error);
+        compareBtn.innerHTML = '<span>🔍 Сравнить учебные планы</span>';
+        compareBtn.disabled = false;
       }
+    });
+
+    function compareFiles(file1, file2) {
+      const sheet1 = file1.workbook.Sheets['Б1'];
+      const sheet2 = file2.workbook.Sheets['Б1'];
+
+      if (!sheet1 || !sheet2) {
+        throw new Error('Один или оба файла не содержат лист "Б1"');
+      }
+
+      const data1 = XLSX.utils.sheet_to_json(sheet1, { header: 1 });
+      const data2 = XLSX.utils.sheet_to_json(sheet2, { header: 1 });
+
+      const subjects1 = parseSubjects(data1);
+      const subjects2 = parseSubjects(data2);
+
+      const categories = categorizeSubjects(subjects1, subjects2);
+
+      return {
+        file1Name: file1.name,
+        file2Name: file2.name,
+        categories: categories
+      };
     }
 
-    function generateComparisonTables() {
-      const categories = ['math', 'programming', 'engineering', 'humanities'];
+    function parseSubjects(data) {
+      const subjects = [];
+      let currentDepartment = '';
 
-      categories.forEach(category => {
-        const tbody1 = document.getElementById(`${category}-body-1`);
-        const tbody2 = document.getElementById(`${category}-body-2`);
-
-        tbody1.innerHTML = '';
-        tbody2.innerHTML = '';
-
-        const disciplines1 = plansData[0].disciplines.filter(d => d.category === category);
-        const disciplines2 = plansData[1].disciplines.filter(d => d.category === category);
-
-        const map1 = new Map();
-        const map2 = new Map();
-
-        disciplines1.forEach(d => map1.set(d.key, d));
-        disciplines2.forEach(d => map2.set(d.key, d));
-
-        // 1. Совпадающие предметы (по названию + кафедра)
-        const commonKeys = [...map1.keys()].filter(key => map2.has(key));
-        commonKeys.forEach(key => {
-          const d1 = map1.get(key);
-          const d2 = map2.get(key);
-
-          const row1 = createSubjectRow(d1, category, 'matched');
-          const row2 = createSubjectRow(d2, category, 'matched');
-
-          tbody1.appendChild(row1);
-          tbody2.appendChild(row2);
-
-          map1.delete(key);
-          map2.delete(key);
-        });
-
-        // Если есть общие предметы, добавляем разделитель
-        if (commonKeys.length > 0 && (map1.size > 0 || map2.size > 0)) {
-          const separatorRow1 = document.createElement('tr');
-          separatorRow1.innerHTML = `<td colspan="3" style="text-align: center; padding: 8px; font-weight: 500; color: var(--gray-400); border-top: 1px solid var(--gray-300); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">—</td>`;
-          tbody1.appendChild(separatorRow1);
-
-          const separatorRow2 = separatorRow1.cloneNode(true);
-          tbody2.appendChild(separatorRow2);
+      for (let i = 0; i < data.length; i++) {
+        const row = data[i];
+        
+        if (row[0] && typeof row[0] === 'string' && row[0].includes('Кафедра')) {
+          currentDepartment = row[0].replace('Кафедра', '').trim();
+          continue;
         }
 
-        // 2. Предметы с одинаковым названием, но разными кафедрами
-        const remaining1 = Array.from(map1.values());
-        const remaining2 = Array.from(map2.values());
-
-        const nameMap1 = new Map();
-        const nameMap2 = new Map();
-
-        remaining1.forEach(d => {
-          const nameKey = d.name.toLowerCase().replace(/\s+/g, ' ').trim();
-          if (!nameMap1.has(nameKey)) nameMap1.set(nameKey, []);
-          nameMap1.get(nameKey).push(d);
-        });
-
-        remaining2.forEach(d => {
-          const nameKey = d.name.toLowerCase().replace(/\s+/g, ' ').trim();
-          if (!nameMap2.has(nameKey)) nameMap2.set(nameKey, []);
-          nameMap2.get(nameKey).push(d);
-        });
-
-        nameMap1.forEach((discs1, nameKey) => {
-          if (nameMap2.has(nameKey)) {
-            const discs2 = nameMap2.get(nameKey);
-
-            const d1 = discs1[0];
-            const d2 = discs2[0];
-
-            const row1 = createSubjectRow(d1, category, 'matched');
-            const row2 = createSubjectRow(d2, category, 'matched');
-
-            tbody1.appendChild(row1);
-            tbody2.appendChild(row2);
-
-            nameMap1.delete(nameKey);
-            nameMap2.delete(nameKey);
-          }
-        });
-
-        // 3. Уникальные предметы плана 1
-        nameMap1.forEach(discs => {
-          discs.forEach(d => {
-            const row1 = createSubjectRow(d, category, 'unique');
-            const row2 = createEmptyRow(category);
-
-            tbody1.appendChild(row1);
-            tbody2.appendChild(row2);
+        if (row[1] && row[2] && !isNaN(row[2])) {
+          subjects.push({
+            name: row[1],
+            hours: parseFloat(row[2]) || 0,
+            department: currentDepartment
           });
-        });
-
-        // 4. Уникальные предметы плана 2
-        nameMap2.forEach(discs => {
-          discs.forEach(d => {
-            const row1 = createEmptyRow(category);
-            const row2 = createSubjectRow(d, category, 'unique');
-
-            tbody1.appendChild(row1);
-            tbody2.appendChild(row2);
-          });
-        });
-
-        // Обновление итоговой разницы по модулю
-        const t1 = plansData[0].totals[category] || { hours: 0 };
-        const t2 = plansData[1].totals[category] || { hours: 0 };
-        const diffAbs = Math.abs(t2.hours - t1.hours);
-
-        document.getElementById(`${category}-diff-abs`).textContent = diffAbs.toLocaleString('ru-RU');
-
-        // Пустое состояние (если нет предметов вообще)
-        if (tbody1.children.length === 0 && tbody2.children.length === 0) {
-          const tr1 = document.createElement('tr');
-          const td1 = document.createElement('td');
-          td1.colSpan = 3;
-          td1.className = 'empty-state';
-          td1.innerHTML = '<div class="empty-state-icon">—</div><p>В этой категории нет дисциплин</p>';
-          tr1.appendChild(td1);
-
-          const tr2 = tr1.cloneNode(true);
-
-          tbody1.appendChild(tr1);
-          tbody2.appendChild(tr2);
         }
+      }
+
+      return subjects;
+    }
+
+    function categorizeSubjects(subjects1, subjects2) {
+      const categories = {
+        math: { name: 'Математика', icon: '∑', subjects1: [], subjects2: [], matched: [] },
+        programming: { name: 'Программирование', icon: '{ }', subjects1: [], subjects2: [], matched: [] },
+        engineering: { name: 'Инженерия', icon: '⚙', subjects1: [], subjects2: [], matched: [] },
+        humanities: { name: 'Гуманитарные науки', icon: '📖', subjects1: [], subjects2: [], matched: [] }
+      };
+
+      const mathKeywords = ['математ', 'алгебр', 'геометр', 'анализ', 'теория вероятност', 'статистик'];
+      const programmingKeywords = ['программ', 'алгоритм', 'данн', 'базы данных', 'веб', 'python', 'java', 'c++', 'software'];
+      const engineeringKeywords = ['физик', 'механик', 'электр', 'схемотехник', 'инженер', 'техник'];
+      const humanitiesKeywords = ['философ', 'истор', 'культур', 'язык', 'литератур', 'социолог', 'психолог', 'экономик', 'правов'];
+
+      function categorizeSubject(subject) {
+        const nameLower = subject.name.toLowerCase();
+        
+        if (mathKeywords.some(kw => nameLower.includes(kw))) return 'math';
+        if (programmingKeywords.some(kw => nameLower.includes(kw))) return 'programming';
+        if (engineeringKeywords.some(kw => nameLower.includes(kw))) return 'engineering';
+        if (humanitiesKeywords.some(kw => nameLower.includes(kw))) return 'humanities';
+        
+        return 'humanities';
+      }
+
+      const subjectsMap2 = new Map(subjects2.map(s => [s.name.toLowerCase().trim(), s]));
+
+      subjects1.forEach(subject => {
+        const category = categorizeSubject(subject);
+        const normalizedName = subject.name.toLowerCase().trim();
+        
+        if (subjectsMap2.has(normalizedName)) {
+          const matchedSubject = subjectsMap2.get(normalizedName);
+          categories[category].matched.push({ subject1: subject, subject2: matchedSubject });
+          subjectsMap2.delete(normalizedName);
+        } else {
+          categories[category].subjects1.push(subject);
+        }
+      });
+
+      subjects2.forEach(subject => {
+        const normalizedName = subject.name.toLowerCase().trim();
+        if (subjectsMap2.has(normalizedName)) {
+          const category = categorizeSubject(subject);
+          categories[category].subjects2.push(subject);
+        }
+      });
+
+      return categories;
+    }
+
+    function displayResults(results) {
+      resultsContainer.innerHTML = '';
+      resultsContainer.style.display = 'block';
+
+      Object.entries(results.categories).forEach(([key, category]) => {
+        const totalSubjects = category.matched.length + category.subjects1.length + category.subjects2.length;
+        if (totalSubjects === 0) return;
+
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = `category-block category-${key}`;
+        
+        categoryDiv.innerHTML = `
+          <div class="category-header">
+            <div class="category-icon">${category.icon}</div>
+            <div class="category-title">${category.name}</div>
+          </div>
+          
+          <div class="summary-total">
+            Всего дисциплин
+            <div class="summary-total-value">${totalSubjects}</div>
+          </div>
+
+          <div class="plans-comparison">
+            <div class="plan-column">
+              <div class="plan-header">${results.file1Name}</div>
+              ${renderSubjectsTable(category, 1)}
+            </div>
+            
+            <div class="plan-column">
+              <div class="plan-header">${results.file2Name}</div>
+              ${renderSubjectsTable(category, 2)}
+            </div>
+          </div>
+        `;
+
+        resultsContainer.appendChild(categoryDiv);
       });
     }
 
-    function createSubjectRow(discipline, category, rowClass) {
-      const row = document.createElement('tr');
-      row.className = `subject-row ${rowClass}`;
-
-      const nameCell = document.createElement('td');
-      const nameDiv = document.createElement('div');
-      nameDiv.className = 'subject-name';
-      nameDiv.textContent = discipline.name;
-
-      const deptDiv = document.createElement('div');
-      deptDiv.className = 'department-info';
-
-      const badge = document.createElement('span');
-      badge.className = 'department-badge';
-      badge.textContent = discipline.department || '—';
-
-      const infoIcon = document.createElement('span');
-      infoIcon.className = 'info-icon tooltip';
-      infoIcon.textContent = 'i';
-
-      const tooltipText = document.createElement('span');
-      tooltipText.className = 'tooltip-text';
-      tooltipText.textContent = DEPARTMENT_INFO[discipline.department] || `Кафедра: ${discipline.department}`;
-
-      infoIcon.appendChild(tooltipText);
-
-      deptDiv.appendChild(badge);
-      deptDiv.appendChild(infoIcon);
-
-      nameCell.appendChild(nameDiv);
-      nameCell.appendChild(deptDiv);
-
-      const deptCell = document.createElement('td');
-      deptCell.className = 'department-info';
-
-      const badge2 = document.createElement('span');
-      badge2.className = 'department-badge';
-      badge2.textContent = discipline.department || '—';
-
-      const infoIcon2 = document.createElement('span');
-      infoIcon2.className = 'info-icon tooltip';
-      infoIcon2.textContent = 'i';
-
-      const tooltipText2 = document.createElement('span');
-      tooltipText2.className = 'tooltip-text';
-      tooltipText2.textContent = DEPARTMENT_INFO[discipline.department] || `Кафедра: ${discipline.department}`;
-
-      infoIcon2.appendChild(tooltipText2);
-
-      deptCell.appendChild(badge2);
-      deptCell.appendChild(infoIcon2);
-
-      const hoursCell = document.createElement('td');
-      hoursCell.className = 'hours-cell';
-      hoursCell.textContent = discipline.totalHours.toLocaleString('ru-RU');
-
-      row.appendChild(nameCell);
-      row.appendChild(deptCell);
-      row.appendChild(hoursCell);
-
-      return row;
-    }
-
-    function createEmptyRow(category) {
-      const row = document.createElement('tr');
-      row.className = 'subject-row';
-
-      const emptyCell = document.createElement('td');
-      emptyCell.colSpan = 3;
-      emptyCell.style.textAlign = 'center';
-      emptyCell.style.color = 'var(--gray-400)';
-      emptyCell.style.fontStyle = 'italic';
-      emptyCell.textContent = '—';
-
-      row.appendChild(emptyCell);
-
-      return row;
-    }
-
-    function downloadResults() {
-      try {
-        const worksheetData = [];
-
-        worksheetData.push(['СРАВНЕНИЕ УЧЕБНЫХ ПЛАНОВ Б1']);
-        worksheetData.push([`План №1: ${plansData[0].filename}`]);
-        worksheetData.push([`План №2: ${plansData[1].filename}`]);
-        worksheetData.push(['']);
-
-        const categories = [
-          { id: 'math', name: 'Математика' },
-          { id: 'programming', name: 'Программирование' },
-          { id: 'engineering', name: 'Инженерия' },
-          { id: 'humanities', name: 'Гуманитарные предметы' }
+    function renderSubjectsTable(category, fileNumber) {
+      let subjects = [];
+      
+      if (fileNumber === 1) {
+        subjects = [
+          ...category.matched.map(m => ({ ...m.subject1, matched: true })),
+          ...category.subjects1.map(s => ({ ...s, unique: true }))
         ];
+      } else {
+        subjects = [
+          ...category.matched.map(m => ({ ...m.subject2, matched: true })),
+          ...category.subjects2.map(s => ({ ...s, unique: true }))
+        ];
+      }
 
-        categories.forEach(cat => {
-          worksheetData.push([cat.name.toUpperCase()]);
-          worksheetData.push(['']);
+      if (subjects.length === 0) {
+        return '<div class="empty-state"><div class="empty-state-icon">📭</div>Нет дисциплин в этой категории</div>';
+      }
 
-          const disciplines1 = plansData[0].disciplines.filter(d => d.category === cat.id);
-          const disciplines2 = plansData[1].disciplines.filter(d => d.category === cat.id);
+      const totalHours = subjects.reduce((sum, s) => sum + (s.hours || 0), 0);
 
-          const map1 = new Map();
-          const map2 = new Map();
+      let html = `
+        <table class="subjects-table">
+          <thead>
+            <tr>
+              <th>Дисциплина</th>
+              <th style="text-align: right;">Часы</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
 
-          disciplines1.forEach(d => map1.set(d.key, d));
-          disciplines2.forEach(d => map2.set(d.key, d));
+      subjects.forEach(subject => {
+        const rowClass = subject.matched ? 'matched' : (subject.unique ? 'unique' : '');
+        html += `
+          <tr class="subject-row ${rowClass}">
+            <td>
+              <div class="subject-name">${subject.name}</div>
+              <div class="department-info">
+                <span class="department-badge">${subject.department || 'Не указана'}</span>
+                ${subject.department ? `
+                  <div class="tooltip">
+                    <div class="info-icon">i</div>
+                    <span class="tooltip-text">
+                      <strong>Кафедра:</strong> ${subject.department}<br>
+                      <strong>Часы:</strong> ${subject.hours}<br>
+                      ${subject.matched ? '<strong>Статус:</strong> Общая дисциплина' : '<strong>Статус:</strong> Уникальная дисциплина'}
+                    </span>
+                  </div>
+                ` : ''}
+              </div>
+            </td>
+            <td class="hours-cell">${subject.hours}</td>
+          </tr>
+        `;
+      });
 
-          const commonKeys = [...map1.keys()].filter(key => map2.has(key));
+      html += `
+          </tbody>
+        </table>
+        <div class="summary-total" style="margin-top: 16px;">
+          <strong>Итого часов:</strong>
+          <div class="summary-total-value">${totalHours}</div>
+        </div>
+      `;
 
-          worksheetData.push(['СОВПАДАЮЩИЕ ПРЕДМЕТЫ']);
-          worksheetData.push(['Дисциплина', 'Кафедра', 'План 1 (часы)', 'Кафедра', 'План 2 (часы)', 'Разница']);
+      return html;
+    }
 
-          commonKeys.forEach(key => {
-            const d1 = map1.get(key);
-            const d2 = map2.get(key);
-            worksheetData.push([
-              d1.name,
-              d1.department || '',
-              d1.totalHours,
-              d2.department || '',
-              d2.totalHours,
-              d2.totalHours - d1.totalHours
-            ]);
-            map1.delete(key);
-            map2.delete(key);
-          });
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      if (!comparisonResults) return;
 
-          worksheetData.push(['']);
-          worksheetData.push(['УНИКАЛЬНЫЕ ПРЕДМЕТЫ ПЛАНА 1']);
-          worksheetData.push(['Дисциплина', 'Кафедра', 'Часы']);
+      const wb = XLSX.utils.book_new();
 
-          map1.forEach(d => {
-            worksheetData.push([d.name, d.department || '', d.totalHours]);
-          });
-
-          worksheetData.push(['']);
-          worksheetData.push(['УНИКАЛЬНЫЕ ПРЕДМЕТЫ ПЛАНА 2']);
-          worksheetData.push(['Дисциплина', 'Кафедра', 'Часы']);
-
-          map2.forEach(d => {
-            worksheetData.push([d.name, d.department || '', d.totalHours]);
-          });
-
-          worksheetData.push(['']);
-          worksheetData.push(['']);
+      Object.entries(comparisonResults.categories).forEach(([key, category]) => {
+        const wsData = [];
+        
+        wsData.push([category.name]);
+        wsData.push([]);
+        wsData.push(['Общие дисциплины']);
+        wsData.push(['Дисциплина', 'Часы (Файл 1)', 'Часы (Файл 2)', 'Кафедра (Файл 1)', 'Кафедра (Файл 2)']);
+        
+        category.matched.forEach(m => {
+          wsData.push([
+            m.subject1.name,
+            m.subject1.hours,
+            m.subject2.hours,
+            m.subject1.department || '',
+            m.subject2.department || ''
+          ]);
         });
 
-        const ws = XLSX.utils.aoa_to_sheet(worksheetData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Сравнение планов');
+        wsData.push([]);
+        wsData.push([`Уникальные для ${comparisonResults.file1Name}`]);
+        wsData.push(['Дисциплина', 'Часы', 'Кафедра']);
+        
+        category.subjects1.forEach(s => {
+          wsData.push([s.name, s.hours, s.department || '']);
+        });
 
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
-        XLSX.writeFile(wb, `сравнение_Б1_${timestamp}.xlsx`);
+        wsData.push([]);
+        wsData.push([`Уникальные для ${comparisonResults.file2Name}`]);
+        wsData.push(['Дисциплина', 'Часы', 'Кафедра']);
+        
+        category.subjects2.forEach(s => {
+          wsData.push([s.name, s.hours, s.department || '']);
+        });
 
-        showStatus('Результаты успешно скачаны', 'success');
-      } catch (error) {
-        showStatus(`Ошибка при создании файла: ${error.message}`, 'error');
-        console.error('Ошибка экспорта:', error);
-      }
-    }
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        XLSX.utils.book_append_sheet(wb, ws, category.name.substring(0, 31));
+      });
 
-    function showStatus(message, type = 'info') {
-      statusBar.textContent = message;
-      statusBar.className = 'status-bar';
-      statusBar.classList.add(type);
-      statusBar.style.display = 'block';
-
-      if (type === 'success') {
-        setTimeout(() => {
-          statusBar.style.display = 'none';
-        }, 5000);
-      }
-    }
+      XLSX.writeFile(wb, 'Сравнение_учебных_планов.xlsx');
+      showStatus('Файл успешно скачан!', 'success');
+    });
   </script>
 </body>
 </html>
