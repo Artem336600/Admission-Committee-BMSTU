@@ -3,68 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сравнение учебных планов | Б1 Дисциплины</title>
+  <title>МГТУ им. Н.Э. Баумана - Выбор направления для поступления</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;500;600;700;800&family=PT+Serif:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Modern vibrant color palette */
-      --primary: #6366f1;
-      --primary-light: #818cf8;
-      --primary-dark: #4f46e5;
-      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --bmstu-blue: #003366;
+      --bmstu-blue-dark: #002244;
+      --bmstu-blue-light: #004d99;
+      --bmstu-gold: #c9a227;
+      --bmstu-gold-light: #daa520;
+      --bmstu-gray: #2c2c2c;
+      --bmstu-gray-light: #4a4a4a;
+      --bmstu-light-gray: #f5f5f5;
+      --bmstu-border: #d0d0d0;
+      --white: #ffffff;
       
-      --math-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --math-border: #667eea;
-      --math-accent: #5b51d8;
-      --math-light: rgba(102, 126, 234, 0.1);
-
-      --programming-bg: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      --programming-border: #f093fb;
-      --programming-accent: #e5507e;
-      --programming-light: rgba(240, 147, 251, 0.1);
-
-      --engineering-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-      --engineering-border: #4facfe;
-      --engineering-accent: #3b9dd8;
-      --engineering-light: rgba(79, 172, 254, 0.1);
-
-      --humanities-bg: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-      --humanities-border: #43e97b;
-      --humanities-accent: #3ad18a;
-      --humanities-light: rgba(67, 233, 123, 0.1);
-
-      --gray-50: #fafafa;
-      --gray-100: #f5f5f5;
-      --gray-200: #e5e5e5;
-      --gray-300: #d4d4d4;
-      --gray-400: #a3a3a3;
-      --gray-500: #737373;
-      --gray-600: #525252;
-      --gray-700: #404040;
-      --gray-800: #262626;
-      --gray-900: #171717;
-
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --info: #3b82f6;
-
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
-
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+      --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25);
+      
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      
+      --transition: all 0.3s ease;
     }
 
     * {
@@ -73,1332 +38,1279 @@
       box-sizing: border-box;
     }
 
-    @keyframes gradient-shift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--gray-800);
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      background-size: 400% 400%;
-      animation: gradient-shift 15s ease infinite;
-      min-height: 100vh;
-      padding: 32px;
+      font-family: 'PT Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--bmstu-gray);
+      background: var(--white);
       line-height: 1.6;
-      position: relative;
     }
 
-    body::before {
-      content: '';
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: var(--bmstu-blue);
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-md);
     }
 
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-      animation: fadeIn 0.5s ease;
+    .header-top {
+      background: var(--bmstu-blue-dark);
+      padding: 8px 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding: 48px 32px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-2xl);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      animation: slideUp 0.6s ease;
+    .header-top-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-contacts span {
+      margin-right: 20px;
+    }
+
+    .header-main {
+      padding: 15px 0;
+    }
+
+    .header-main-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--bmstu-gold);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--bmstu-blue-dark);
+    }
+
+    .logo-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .logo-text p {
+      font-size: 12px;
+      color: var(--bmstu-gold);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      padding: 8px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    nav a:hover {
+      color: var(--bmstu-gold);
+      border-bottom-color: var(--bmstu-gold);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--bmstu-blue) 0%, var(--bmstu-blue-dark) 100%);
+      padding: 180px 0 100px;
       position: relative;
       overflow: hidden;
     }
 
-    header::before {
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: 'PT Serif', Georgia, serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      color: var(--bmstu-gold);
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 60px;
+      margin-top: 50px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--bmstu-gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-gray {
+      background: var(--bmstu-light-gray);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+      font-family: 'PT Serif', Georgia, serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--bmstu-blue);
+      margin-bottom: 15px;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--bmstu-gray-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-header .divider {
+      width: 80px;
+      height: 4px;
+      background: var(--bmstu-gold);
+      margin: 20px auto;
+    }
+
+    .faculties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+    }
+
+    .faculty-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      border: 1px solid var(--bmstu-border);
+    }
+
+    .faculty-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .faculty-header {
+      background: linear-gradient(135deg, var(--bmstu-blue) 0%, var(--bmstu-blue-light) 100%);
+      padding: 30px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .faculty-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--bmstu-gold);
+      line-height: 1;
+    }
+
+    .faculty-info h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .faculty-info p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .faculty-body {
+      padding: 25px;
+    }
+
+    .faculty-description {
+      color: var(--bmstu-gray-light);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .directions-list {
+      list-style: none;
+    }
+
+    .directions-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bmstu-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .directions-list li:last-child {
+      border-bottom: none;
+    }
+
+    .directions-list li::before {
+      content: '→';
+      color: var(--bmstu-gold);
+      font-weight: 700;
+    }
+
+    .directions-list a {
+      color: var(--bmstu-blue);
+      text-decoration: none;
+      font-weight: 500;
+      flex: 1;
+      transition: var(--transition);
+    }
+
+    .directions-list a:hover {
+      color: var(--bmstu-gold);
+    }
+
+    .direction-code {
+      background: var(--bmstu-light-gray);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--bmstu-gray-light);
+      font-weight: 600;
+    }
+
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .department-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      border: 1px solid var(--bmstu-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .department-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
-      background-size: 300% 100%;
-      animation: gradient-shift 3s linear infinite;
+      background: var(--bmstu-gold);
     }
 
-    h1 {
-      font-size: 42px;
-      font-weight: 800;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-    }
-
-    .subtitle {
-      color: var(--gray-600);
-      font-size: 16px;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.7;
-      font-weight: 400;
-    }
-
-    .upload-area {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      padding: 56px 40px;
-      text-align: center;
-      box-shadow: var(--shadow-xl);
-      margin-bottom: 40px;
-      border: 3px dashed rgba(102, 126, 234, 0.3);
-      transition: var(--transition);
-      cursor: pointer;
-      position: relative;
-      animation: slideUp 0.6s ease 0.1s both;
-    }
-
-    .upload-area::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-xl);
-      padding: 3px;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0;
-      transition: var(--transition);
-    }
-
-    .upload-area:hover::before {
-      opacity: 1;
-    }
-
-    .upload-area:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-2xl);
-      border-color: rgba(102, 126, 234, 0.5);
-    }
-
-    .upload-area.drag-over {
-      border-color: var(--primary);
-      background: rgba(102, 126, 234, 0.05);
-      border-style: solid;
-      transform: scale(1.02);
-    }
-
-    .upload-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 24px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: var(--radius-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      color: white;
+    .department-card:hover {
+      transform: translateY(-5px);
       box-shadow: var(--shadow-lg);
-      animation: float 3s ease-in-out infinite;
     }
 
-    .upload-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--gray-900);
-      letter-spacing: -0.02em;
-    }
-
-    .upload-instructions {
-      color: var(--gray-600);
-      font-size: 16px;
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .upload-hint {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-      border-left: 4px solid var(--primary);
-      padding: 16px 20px;
-      text-align: left;
-      margin-top: 24px;
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      color: var(--gray-700);
-      line-height: 1.6;
-    }
-
-    .file-input {
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-
-    .files-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 32px;
-      margin-bottom: 40px;
-      animation: slideUp 0.6s ease 0.2s both;
-    }
-
-    .file-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .file-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--gray-300);
-      transition: var(--transition);
-    }
-
-    .file-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-2xl);
-    }
-
-    .file-card.uploaded::before {
-      background: linear-gradient(90deg, #10b981, #059669);
-    }
-
-    .file-card.uploaded {
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    .file-card-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid var(--gray-100);
-    }
-
-    .file-number {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+    .department-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--bmstu-blue) 0%, var(--bmstu-blue-light) 100%);
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .department-card h3 {
       font-size: 20px;
-      color: var(--gray-700);
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
+      font-weight: 700;
+      color: var(--bmstu-blue);
+      margin-bottom: 15px;
+    }
+
+    .department-card p {
+      color: var(--bmstu-gray-light);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .department-link {
+      display: inline-block;
+      color: var(--bmstu-blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       transition: var(--transition);
     }
 
-    .file-card.uploaded .file-number {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      animation: pulse 2s ease infinite;
+    .department-link:hover {
+      color: var(--bmstu-gold);
     }
 
-    .file-name {
-      font-weight: 600;
-      font-size: 16px;
-      color: var(--gray-900);
-      word-break: break-word;
-      line-height: 1.4;
-    }
-
-    .file-meta {
+    .admission-steps {
       display: flex;
       justify-content: space-between;
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--gray-500);
-      font-weight: 500;
-    }
-
-    .compare-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      padding: 40px;
-      text-align: center;
-      box-shadow: var(--shadow-xl);
-      margin-bottom: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      animation: slideUp 0.6s ease 0.3s both;
-    }
-
-    .compare-btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 18px 48px;
-      font-size: 17px;
-      font-weight: 700;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: var(--shadow-lg);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      letter-spacing: 0.02em;
       position: relative;
-      overflow: hidden;
     }
 
-    .compare-btn::before {
+    .admission-steps::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s;
+      top: 40px;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: var(--bmstu-border);
     }
 
-    .compare-btn:hover::before {
-      left: 100%;
-    }
-
-    .compare-btn:hover:not(:disabled) {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: var(--shadow-2xl);
-    }
-
-    .compare-btn:active:not(:disabled) {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .compare-btn:disabled {
-      background: linear-gradient(135deg, var(--gray-300), var(--gray-400));
-      color: var(--gray-500);
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .results-container {
-      display: none;
-      gap: 32px;
-      margin-top: 32px;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .category-block {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      padding: 32px;
-      box-shadow: var(--shadow-xl);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      margin-bottom: 32px;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .category-block::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      transition: var(--transition);
-    }
-
-    .category-math::before { background: var(--math-bg); }
-    .category-programming::before { background: var(--programming-bg); }
-    .category-engineering::before { background: var(--engineering-bg); }
-    .category-humanities::before { background: var(--humanities-bg); }
-
-    .category-block:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-2xl);
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 28px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid var(--gray-100);
-    }
-
-    .category-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: var(--radius-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 700;
-      color: white;
-      flex-shrink: 0;
-      letter-spacing: 0;
-      box-shadow: var(--shadow-lg);
-      transition: var(--transition);
-    }
-
-    .category-math .category-icon { background: var(--math-bg); }
-    .category-programming .category-icon { background: var(--programming-bg); }
-    .category-engineering .category-icon { background: var(--engineering-bg); }
-    .category-humanities .category-icon { background: var(--humanities-bg); }
-
-    .category-block:hover .category-icon {
-      transform: rotate(5deg) scale(1.1);
-    }
-
-    .category-title {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--gray-900);
-      letter-spacing: -0.02em;
-    }
-
-    .plans-comparison {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 24px;
-    }
-
-    .plan-column {
-      background: var(--gray-50);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      border: 2px solid var(--gray-100);
-      transition: var(--transition);
-    }
-
-    .plan-column:hover {
-      border-color: var(--gray-200);
-      box-shadow: var(--shadow-md);
-    }
-
-    .plan-header {
+    .step {
       text-align: center;
-      padding: 16px;
-      margin-bottom: 20px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border: 2px solid;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+      flex: 1;
     }
 
-    .plan-header:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .category-math .plan-header { 
-      background: var(--math-light); 
-      color: var(--math-accent); 
-      border-color: var(--math-border); 
-    }
-    .category-programming .plan-header { 
-      background: var(--programming-light); 
-      color: var(--programming-accent); 
-      border-color: var(--programming-border); 
-    }
-    .category-engineering .plan-header { 
-      background: var(--engineering-light); 
-      color: var(--engineering-accent); 
-      border-color: var(--engineering-border); 
-    }
-    .category-humanities .plan-header { 
-      background: var(--humanities-light); 
-      color: var(--humanities-accent); 
-      border-color: var(--humanities-border); 
-    }
-
-    .subjects-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      background: white;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 2px solid var(--gray-200);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .subjects-table thead {
-      background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
-    }
-
-    .subjects-table th {
-      padding: 16px;
-      text-align: left;
-      font-weight: 700;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gray-700);
-      border-bottom: 2px solid var(--gray-200);
-    }
-
-    .subjects-table td {
-      padding: 16px;
-      border-bottom: 1px solid var(--gray-100);
-      vertical-align: top;
-      background: white;
-      transition: var(--transition-fast);
-    }
-
-    .subjects-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .subjects-table tbody tr:hover td {
-      background: var(--gray-50);
-    }
-
-    .subject-row.matched td {
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), transparent 95%);
-      border-left: 4px solid var(--info);
-    }
-
-    .subject-row.matched:hover td {
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.12), transparent 95%);
-    }
-
-    .subject-row.unique {
-      opacity: 0.7;
-    }
-
-    .subject-row.unique td {
-      background: var(--gray-50);
-    }
-
-    .subject-name {
-      font-weight: 600;
-      color: var(--gray-900);
-      font-size: 14px;
-      margin-bottom: 8px;
-      line-height: 1.5;
-    }
-
-    .department-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .department-badge {
-      display: inline-flex;
-      align-items: center;
-      background: var(--gray-100);
-      color: var(--gray-700);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid var(--gray-200);
-      transition: var(--transition-fast);
-    }
-
-    .department-badge:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .category-math .department-badge { 
-      background: var(--math-light); 
-      color: var(--math-accent); 
-      border-color: var(--math-border); 
-    }
-    .category-programming .department-badge { 
-      background: var(--programming-light); 
-      color: var(--programming-accent); 
-      border-color: var(--programming-border); 
-    }
-    .category-engineering .department-badge { 
-      background: var(--engineering-light); 
-      color: var(--engineering-accent); 
-      border-color: var(--engineering-border); 
-    }
-    .category-humanities .department-badge { 
-      background: var(--humanities-light); 
-      color: var(--humanities-accent); 
-      border-color: var(--humanities-border); 
-    }
-
-    .info-icon {
-      width: 20px;
-      height: 20px;
-      background: linear-gradient(135deg, var(--info), #2563eb);
-      color: white;
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: var(--white);
+      border: 3px solid var(--bmstu-blue);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: help;
-      flex-shrink: 0;
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .info-icon:hover {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      transform: scale(1.2) rotate(12deg);
-      box-shadow: var(--shadow-md);
-    }
-
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    .tooltip .tooltip-text {
-      visibility: hidden;
-      width: 300px;
-      background: var(--gray-900);
-      color: white;
-      text-align: left;
-      border-radius: var(--radius-md);
-      padding: 16px;
-      position: absolute;
-      z-index: 1000;
-      bottom: 150%;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 13px;
-      line-height: 1.6;
-      box-shadow: var(--shadow-2xl);
-      font-weight: 400;
-    }
-
-    .tooltip .tooltip-text::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -8px;
-      border-width: 8px;
-      border-style: solid;
-      border-color: var(--gray-900) transparent transparent transparent;
-    }
-
-    .tooltip:hover .tooltip-text {
-      visibility: visible;
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .hours-cell {
-      font-weight: 700;
-      text-align: right;
-      font-size: 15px;
-      min-width: 70px;
-      font-variant-numeric: tabular-nums;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .category-math .hours-cell { color: var(--math-accent); }
-    .category-programming .hours-cell { color: var(--programming-accent); }
-    .category-engineering .hours-cell { color: var(--engineering-accent); }
-    .category-humanities .hours-cell { color: var(--humanities-accent); }
-
-    .download-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: var(--radius-xl);
-      padding: 40px;
-      text-align: center;
-      box-shadow: var(--shadow-xl);
-      margin-top: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      animation: slideUp 0.6s ease 0.4s both;
-    }
-
-    .download-btn {
-      background: white;
-      color: var(--gray-800);
-      border: 2px solid var(--gray-300);
-      padding: 16px 32px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: var(--shadow-md);
-    }
-
-    .download-btn:hover {
-      background: var(--gray-50);
-      border-color: var(--gray-500);
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
-    }
-
-    .download-btn:active {
-      transform: translateY(0);
-    }
-
-    .status-bar {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      color: var(--gray-800);
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
-      margin: 24px 0;
-      text-align: center;
-      font-weight: 600;
-      font-size: 15px;
-      display: none;
-      box-shadow: var(--shadow-lg);
-      border: 2px solid transparent;
-      animation: slideUp 0.3s ease;
-    }
-
-    .status-bar.error {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      border-color: var(--danger);
-    }
-
-    .status-bar.success {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--success);
-      border-color: var(--success);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--gray-500);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .empty-state-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .summary-total {
-      background: linear-gradient(135deg, var(--gray-50), white);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      margin-bottom: 24px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 14px;
-      border: 2px solid var(--gray-200);
-      color: var(--gray-700);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-    }
-
-    .summary-total:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .summary-total-value {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 800;
-      margin-top: 8px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-variant-numeric: tabular-nums;
-      font-family: 'JetBrains Mono', monospace;
+      color: var(--bmstu-blue);
+      margin: 0 auto 20px;
+      transition: var(--transition);
     }
 
-    @media (max-width: 1200px) {
-      .plans-comparison {
+    .step:hover .step-number {
+      background: var(--bmstu-blue);
+      color: var(--white);
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--bmstu-blue);
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--bmstu-gray-light);
+      padding: 0 15px;
+    }
+
+    .requirements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 30px;
+    }
+
+    .requirement-block {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      border-left: 5px solid var(--bmstu-blue);
+    }
+
+    .requirement-block.documents {
+      border-left-color: var(--bmstu-gold);
+    }
+
+    .requirement-block h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--bmstu-blue);
+      margin-bottom: 20px;
+    }
+
+    .requirement-list {
+      list-style: none;
+    }
+
+    .requirement-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--bmstu-border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .requirement-list li::before {
+      content: '✓';
+      color: var(--bmstu-gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .requirement-list li:last-child {
+      border-bottom: none;
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, var(--bmstu-blue-dark) 0%, var(--bmstu-blue) 100%);
+      padding: 80px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-family: 'PT Serif', Georgia, serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--bmstu-gold);
+      color: var(--bmstu-blue-dark);
+      padding: 18px 50px;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .cta-btn:hover {
+      background: var(--bmstu-gold-light);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      border: 1px solid var(--bmstu-border);
+    }
+
+    .contact-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bmstu-blue);
+      margin-bottom: 20px;
+    }
+
+    .contact-card p {
+      color: var(--bmstu-gray-light);
+      margin-bottom: 10px;
+    }
+
+    .contact-card a {
+      color: var(--bmstu-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .contact-card a:hover {
+      color: var(--bmstu-gold);
+    }
+
+    footer {
+      background: var(--bmstu-blue-dark);
+      color: var(--white);
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--bmstu-gold);
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-section ul a:hover {
+      color: var(--bmstu-gold);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 30px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .faculties-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admission-steps {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .admission-steps::before {
+        display: none;
+      }
+
+      .requirements-grid {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 768px) {
-      body {
-        padding: 20px;
+      nav ul {
+        display: none;
       }
 
-      header {
-        padding: 32px 24px;
+      .mobile-menu-btn {
+        display: block;
       }
 
-      h1 {
+      .hero h1 {
         font-size: 32px;
       }
 
-      .subtitle {
-        font-size: 15px;
+      .hero-stats {
+        flex-direction: column;
+        gap: 30px;
       }
 
-      .upload-area {
-        padding: 40px 24px;
+      .section {
+        padding: 50px 0;
       }
 
-      .upload-icon {
-        width: 64px;
-        height: 64px;
-        font-size: 28px;
+      .section-header h2 {
+        font-size: 32px;
       }
 
-      .files-grid {
+      .faculties-grid,
+      .departments-grid,
+      .contacts-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
       }
 
-      .category-header {
-        flex-direction: row;
-        text-align: left;
+      .header-top {
+        display: none;
       }
-
-      .category-title {
-        font-size: 22px;
-      }
-
-      .compare-btn {
-        width: 100%;
-        padding: 16px;
-      }
-
-      .subjects-table {
-        font-size: 13px;
-        display: block;
-        overflow-x: auto;
-      }
-
-      .subjects-table th,
-      .subjects-table td {
-        padding: 12px 10px;
-      }
-
-      .plans-comparison {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .category-block {
-        padding: 24px;
-      }
-
-      .plan-column {
-        padding: 20px;
-      }
-    }
-
-    /* Loading animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🎓 Сравнение учебных планов Б1</h1>
-      <p class="subtitle">Загрузите два файла формата Б1 (Дисциплины) для детального сравнения. Общие предметы будут выделены, информация о кафедрах доступна по клику на значок (i).</p>
-    </header>
-
-    <div class="upload-area" id="dropZone">
-      <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls" multiple>
-      <div class="upload-icon">📁</div>
-      <div class="upload-title">Перетащите файлы сюда</div>
-      <div class="upload-instructions">или нажмите для выбора файлов (.xlsx, .xls)</div>
-      <div class="upload-hint">
-        <strong>💡 Подсказка:</strong> Вы можете загрузить до 2 файлов одновременно. Файлы должны содержать листы «Б1», с информацией о дисциплинах и кафедрах.
-      </div>
-    </div>
-
-    <div class="files-grid" id="fileCards">
-      <div class="file-card" id="file1Card">
-        <div class="file-card-header">
-          <div class="file-number">1</div>
-          <div class="file-name">Файл не загружен</div>
+  <header>
+    <div class="header-top">
+      <div class="container header-top-content">
+        <div class="header-contacts">
+          <span>📞 +7 (495) 680-65-65</span>
+          <span>✉️ priem@bmstu.ru</span>
         </div>
-        <div class="file-meta">
-          <span id="file1Meta">Ожидание загрузки...</span>
-        </div>
-      </div>
-
-      <div class="file-card" id="file2Card">
-        <div class="file-card-header">
-          <div class="file-number">2</div>
-          <div class="file-name">Файл не загружен</div>
-        </div>
-        <div class="file-meta">
-          <span id="file2Meta">Ожидание загрузки...</span>
+        <div class="header-info">
+          <span>Приемная кампания 2024</span>
         </div>
       </div>
     </div>
-
-    <div class="compare-section">
-      <button id="compareBtn" class="compare-btn" disabled>
-        <span>🔍 Сравнить учебные планы</span>
-      </button>
+    <div class="header-main">
+      <div class="container header-main-content">
+        <div class="logo">
+          <div class="logo-icon">М</div>
+          <div class="logo-text">
+            <h1>МГТУ им. Н.Э. Баумана</h1>
+            <p>Первый российский технический университет</p>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#faculties">Факультеты</a></li>
+            <li><a href="#departments">Кафедры</a></li>
+            <li><a href="#admission">Поступающим</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+          </ul>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+      </div>
     </div>
+  </header>
 
-    <div id="statusBar" class="status-bar"></div>
-
-    <div class="results-container" id="resultsContainer"></div>
-
-    <div class="download-section" id="downloadSection" style="display: none;">
-      <button id="downloadBtn" class="download-btn">
-        <span>📥 Скачать результаты сравнения (Excel)</span>
-      </button>
+  <section class="hero">
+    <div class="container hero-content">
+      <h1>Выберите своё <span>направление</span> в МГТУ им. Баумана</h1>
+      <p>Один из старейших и престижнейших технических университетов России. Более 190 лет подготовки инженерной элиты страны.</p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">10</div>
+          <div class="stat-label">Факультетов</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100+</div>
+          <div class="stat-label">Направлений</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Кафедр</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">20000+</div>
+          <div class="stat-label">Студентов</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="section section-gray" id="faculties">
+    <div class="container">
+      <div class="section-header">
+        <h2>Факультеты университета</h2>
+        <div class="divider"></div>
+        <p>МГТУ им. Баумана предлагает обучение по широкому спектру инженерных и технических специальностей</p>
+      </div>
+
+      <div class="faculties-grid">
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">ФН</div>
+            <div class="faculty-info">
+              <h3>Фундаментальные науки</h3>
+              <p>Факультет №1</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Подготовка специалистов в области математики, механики, физики и фундаментальных наук, лежащих в основе инженерного образования.</p>
+            <ul class="directions-list">
+              <li><a href="#">Механика и математическое моделирование</a> <span class="direction-code">01.03.03</span></li>
+              <li><a href="#">Прикладная математика и информатика</a> <span class="direction-code">01.03.02</span></li>
+              <li><a href="#">Физика</a> <span class="direction-code">03.03.02</span></li>
+              <li><a href="#">Химия</a> <span class="direction-code">04.03.01</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">ИБМ</div>
+            <div class="faculty-info">
+              <h3>Информатика и системы управления</h3>
+              <p>Факультет №2</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Обучение в области информационных технологий, программирования, системного анализа и искусственного интеллекта.</p>
+            <ul class="directions-list">
+              <li><a href="#">Информатика и вычислительная техника</a> <span class="direction-code">09.03.01</span></li>
+              <li><a href="#">Программная инженерия</a> <span class="direction-code">09.03.04</span></li>
+              <li><a href="#">Информационная безопасность</a> <span class="direction-code">10.03.01</span></li>
+              <li><a href="#">Системный анализ и управление</a> <span class="direction-code">27.03.03</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">РК</div>
+            <div class="faculty-info">
+              <h3>Радиоэлектроника и лазерная техника</h3>
+              <p>Факультет №3</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Подготовка специалистов в области радиоэлектроники, лазерных систем, фотоники и оптоэлектроники.</p>
+            <ul class="directions-list">
+              <li><a href="#">Радиотехника</a> <span class="direction-code">11.03.01</span></li>
+              <li><a href="#">Конструирование и технология электронных средств</a> <span class="direction-code">11.03.03</span></li>
+              <li><a href="#">Оптотехника</a> <span class="direction-code">12.03.02</span></li>
+              <li><a href="#">Лазерная техника и лазерные технологии</a> <span class="direction-code">12.03.05</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">МТ</div>
+            <div class="faculty-info">
+              <h3>Машиностроительные технологии</h3>
+              <p>Факультет №4</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Обучение современным технологиям машиностроения, автоматизации производственных процессов и инженерного дизайна.</p>
+            <ul class="directions-list">
+              <li><a href="#">Машиностроение</a> <span class="direction-code">15.03.01</span></li>
+              <li><a href="#">Технология машиностроения</a> <span class="direction-code">15.03.05</span></li>
+              <li><a href="#">Дизайн</a> <span class="direction-code">54.03.01</span></li>
+              <li><a href="#">Конструкторско-технологическое обеспечение</a> <span class="direction-code">15.03.06</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">РК</div>
+            <div class="faculty-info">
+              <h3>Робототехника и комплексная автоматизация</h3>
+              <p>Факультет №5</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Подготовка специалистов в области робототехники, мехатроники и автоматизации производственных систем.</p>
+            <ul class="directions-list">
+              <li><a href="#">Мехатроника и робототехника</a> <span class="direction-code">15.03.06</span></li>
+              <li><a href="#">Автоматизация технологических процессов</a> <span class="direction-code">15.03.04</span></li>
+              <li><a href="#">Управление в технических системах</a> <span class="direction-code">27.03.04</span></li>
+              <li><a href="#">Стандартизация и метрология</a> <span class="direction-code">27.03.01</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">Э</div>
+            <div class="faculty-info">
+              <h3>Энергетика</h3>
+              <p>Факультет №6</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Обучение в области энергетики, электротехники и теплотехники с акцентом на современные энергосберегающие технологии.</p>
+            <ul class="directions-list">
+              <li><a href="#">Электроэнергетика и электротехника</a> <span class="direction-code">13.03.02</span></li>
+              <li><a href="#">Теплоэнергетика и теплотехника</a> <span class="direction-code">13.03.01</span></li>
+              <li><a href="#">Ядерная энергетика и теплофизика</a> <span class="direction-code">14.03.01</span></li>
+              <li><a href="#">Электроэнергетические системы и сети</a> <span class="direction-code">13.03.03</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">АК</div>
+            <div class="faculty-info">
+              <h3>Аэрокосмический</h3>
+              <p>Факультет №7</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Подготовка специалистов для аэрокосмической отрасли, авиастроения и ракетно-космической техники.</p>
+            <ul class="directions-list">
+              <li><a href="#">Авиастроение</a> <span class="direction-code">24.03.04</span></li>
+              <li><a href="#">Ракетные комплексы и космонавтика</a> <span class="direction-code">24.03.01</span></li>
+              <li><a href="#">Двигатели летательных аппаратов</a> <span class="direction-code">24.03.03</span></li>
+              <li><a href="#">Аэродинамика и динамика полета</a> <span class="direction-code">24.03.02</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">СМ</div>
+            <div class="faculty-info">
+              <h3>Специальное машиностроение</h3>
+              <p>Факультет №8</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Обучение созданию специальной техники для оборонной промышленности, космической отрасли и гражданского применения.</p>
+            <ul class="directions-list">
+              <li><a href="#">Проектирование машин и комплексов</a> <span class="direction-code">15.03.03</span></li>
+              <li><a href="#">Оружие и системы вооружения</a> <span class="direction-code">24.03.05</span></li>
+              <li><a href="#">Баллистика и аэродинамика</a> <span class="direction-code">24.03.02</span></li>
+              <li><a href="#">Технология оборонного производства</a> <span class="direction-code">15.03.07</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">ИУ</div>
+            <div class="faculty-info">
+              <h3>Инженерный бизнес и менеджмент</h3>
+              <p>Факультет №9</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Подготовка управленцев и экономистов с техническим образованием для высокотехнологичных отраслей промышленности.</p>
+            <ul class="directions-list">
+              <li><a href="#">Менеджмент</a> <span class="direction-code">38.03.02</span></li>
+              <li><a href="#">Экономика</a> <span class="direction-code">38.03.01</span></li>
+              <li><a href="#">Управление персоналом</a> <span class="direction-code">38.03.03</span></li>
+              <li><a href="#">Бизнес-информатика</a> <span class="direction-code">38.03.05</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faculty-card">
+          <div class="faculty-header">
+            <div class="faculty-number">ГУИМЦ</div>
+            <div class="faculty-info">
+              <h3>Гуманитарный</h3>
+              <p>Факультет №10</p>
+            </div>
+          </div>
+          <div class="faculty-body">
+            <p class="faculty-description">Гуманитарная подготовка инженеров и обучение специальным направлениям социальной и лингвистической сфер.</p>
+            <ul class="directions-list">
+              <li><a href="#">Социология</a> <span class="direction-code">39.03.01</span></li>
+              <li><a href="#">Политология</a> <span class="direction-code">41.03.04</span></li>
+              <li><a href="#">Психология</a> <span class="direction-code">37.03.01</span></li>
+              <li><a href="#">Лингвистика</a> <span class="direction-code">45.03.02</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="departments">
+    <div class="container">
+      <div class="section-header">
+        <h2>Кафедры и научные направления</h2>
+        <div class="divider"></div>
+        <p>Ознакомьтесь с основными кафедрами университета и направлениями их научной деятельности</p>
+      </div>
+
+      <div class="departments-grid">
+        <div class="department-card">
+          <div class="department-icon">📐</div>
+          <h3>Высшая математика</h3>
+          <p>Теоретические основы математики, математическое моделирование, вычислительная математика, теория вероятностей.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">⚙️</div>
+          <h3>Теоретическая механика</h3>
+          <p>Механика твердого тела, теория механизмов и машин, динамика и прочность машин, biomechanics.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">💻</div>
+          <h3>Информатика и системы управления</h3>
+          <p>Программирование, базы данных, искусственный интеллект, информационные системы, компьютерные сети.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🔬</div>
+          <h3>Физика</h3>
+          <p>Общая физика, квантовая физика, оптика, физика твердого тела, ядерная физика.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🔧</div>
+          <h3>Детали машин</h3>
+          <p>Конструирование деталей машин, механика передачи, tribology, основы конструирования машин.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🤖</div>
+          <h3>Робототехнические системы</h3>
+          <p>Промышленная робототехника, мобильные роботы, сенсорные системы, автоматизированное управление.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">⚡</div>
+          <h3>Электротехника и электроника</h3>
+          <p>Теоретическая электротехника, электроника, электропривод, силовая электроника.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🔥</div>
+          <h3>Теплотехника</h3>
+          <p>Термодинамика, теплопередача, двигатели внутреннего сгорания, тепловые машины.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">✈️</div>
+          <h3>Аэродинамика</h3>
+          <p>Экспериментальная аэродинамика, вычислительная аэродинамика, динамика полета, газовая динамика.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🚀</div>
+          <h3>Ракетные двигатели</h3>
+          <p>Жидкостные ракетные двигатели, твердотопливные двигатели, ракетное топливо, системы подачи топлива.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🏭</div>
+          <h3>Технология машиностроения</h3>
+          <p>Обработка материалов, станки и инструменты, автоматизация производства, качество продукции.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">📊</div>
+          <h3>Экономика и организация производства</h3>
+          <p>Промышленная экономика, управление проектами, финансовый менеджмент, маркетинг.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🎨</div>
+          <h3>Инженерная графика</h3>
+          <p>Начертательная геометрия, компьютерная графика, CAD/CAM системы, техническое проектирование.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🧪</div>
+          <h3>Материаловедение</h3>
+          <p>Металлы и сплавы, полимеры, композиционные материалы, наноматериалы, коррозия.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">📡</div>
+          <h3>Радиотехника</h3>
+          <p>Радиосистемы, антенны, микроволновая техника, радиолокация, системы связи.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+
+        <div class="department-card">
+          <div class="department-icon">🌐</div>
+          <h3>Иностранные языки</h3>
+          <p>Английский, немецкий, французский языки, технический перевод, деловая коммуникация.</p>
+          <a href="#" class="department-link">Подробнее →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-gray" id="admission">
+    <div class="container">
+      <div class="section-header">
+        <h2>Информация для поступающих</h2>
+        <div class="divider"></div>
+        <p>Все необходимое для успешного поступления в МГТУ им. Баумана</p>
+      </div>
+
+      <div class="admission-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Выберите направление</h3>
+          <p>Ознакомьтесь с факультетами и направлениями обучения</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Подайте документы</h3>
+          <p>Загрузите документы через личный кабинет на портале</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Пройдите экзамены</h3>
+          <p>ЕГЭ или внутренние вступительные испытания</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Получите результат</h3>
+          <p>Следите за конкурсным списком и зачислением</p>
+        </div>
+      </div>
+
+      <div class="requirements-grid" style="margin-top: 60px;">
+        <div class="requirement-block">
+          <h3>Требования к абитуриентам</h3>
+          <ul class="requirement-list">
+            <li>Среднее общее образование (11 классов)</li>
+            <li>Положительные баллы ЕГЭ по профильным предметам</li>
+            <li>Средний балл аттестата не ниже 4.5</li>
+            <li>Индивидуальные достижения (олимпиады, портфолио)</li>
+            <li>Медицинская справка по форме 086/у</li>
+            <li>Фотографии 3x4 см (6 штук)</li>
+          </ul>
+        </div>
+
+        <div class="requirement-block documents">
+          <h3>Необходимые документы</h3>
+          <ul class="requirement-list">
+            <li>Паспорт гражданина РФ</li>
+            <li>Аттестат о среднем общем образовании</li>
+            <li>Сертификаты ЕГЭ</li>
+            <li>Снилс</li>
+            <li>Медицинская справка</li>
+            <li>Фотографии</li>
+            <li>Заявление о согласии на зачисление</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container cta-content">
+      <h2>Готовы к поступлению?</h2>
+      <p>Начните свой путь в МГТУ им. Баумана уже сегодня. Подайте документы онлайн или запишитесь на консультацию.</p>
+      <a href="#" class="cta-btn">Подать документы онлайн</a>
+    </div>
+  </section>
+
+  <section class="section" id="contacts">
+    <div class="container">
+      <div class="section-header">
+        <h2>Контакты</h2>
+        <div class="divider"></div>
+        <p>Свяжитесь с нами для получения дополнительной информации</p>
+      </div>
+
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <h3>📞 Телефон</h3>
+          <p>Приемная комиссия</p>
+          <a href="tel:+74956806565">+7 (495) 680-65-65</a>
+        </div>
+        <div class="contact-card">
+          <h3>✉️ Email</h3>
+          <p>Для абитуриентов</p>
+          <a href="mailto:priem@bmstu.ru">priem@bmstu.ru</a>
+        </div>
+        <div class="contact-card">
+          <h3>📍 Адрес</h3>
+          <p>Главный корпус</p>
+          <p>г. Москва, ул. 2-я Бауманская, д. 5, стр. 1</p>
+        </div>
+        <div class="contact-card">
+          <h3>🕐 Режим работы</h3>
+          <p>Приемная комиссия</p>
+          <p>Пн-Пт: 9:00 - 18:00</p>
+          <p>Сб: 10:00 - 16:00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>МГТУ им. Н.Э. Баумана</h3>
+          <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6;">
+            Первый российский технический университет, основанный в 1830 году. Более 190 лет подготовки инженерной элиты России.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Факультеты</h3>
+          <ul>
+            <li><a href="#">Фундаментальные науки</a></li>
+            <li><a href="#">Информатика и системы управления</a></li>
+            <li><a href="#">Радиоэлектроника</a></li>
+            <li><a href="#">Машиностроение</a></li>
+            <li><a href="#">Робототехника</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Поступающим</h3>
+          <ul>
+            <li><a href="#">Подать документы</a></li>
+            <li><a href="#">Направления обучения</a></li>
+            <li><a href="#">Вступительные испытания</a></li>
+            <li><a href="#">Контрольные цифры приема</a></li>
+            <li><a href="#">Общежитие</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Информация</h3>
+          <ul>
+            <li><a href="#">История университета</a></li>
+            <li><a href="#">Научная деятельность</a></li>
+            <li><a href="#">Международное сотрудничество</a></li>
+            <li><a href="#">Карьера</a></li>
+            <li><a href="#">Контакты</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 МГТУ им. Н.Э. Баумана. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    let file1Data = null;
-    let file2Data = null;
-    let comparisonResults = null;
-
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const compareBtn = document.getElementById('compareBtn');
-    const resultsContainer = document.getElementById('resultsContainer');
-    const statusBar = document.getElementById('statusBar');
-    const downloadSection = document.getElementById('downloadSection');
-
-    dropZone.addEventListener('click', () => fileInput.click());
-    
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('drag-over');
-    });
-
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('drag-over');
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('drag-over');
-      const files = Array.from(e.dataTransfer.files).filter(f => 
-        f.name.endsWith('.xlsx') || f.name.endsWith('.xls')
-      );
-      if (files.length > 0) {
-        handleFiles(files);
-      }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      const files = Array.from(e.target.files);
-      handleFiles(files);
-    });
-
-    function handleFiles(files) {
-      if (files.length > 2) {
-        showStatus('Можно загрузить максимум 2 файла', 'error');
-        return;
-      }
-
-      files.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            
-            if (index === 0) {
-              file1Data = { workbook, name: file.name };
-              updateFileCard(1, file.name, true);
-            } else {
-              file2Data = { workbook, name: file.name };
-              updateFileCard(2, file.name, true);
-            }
-
-            if (file1Data && file2Data) {
-              compareBtn.disabled = false;
-            }
-          } catch (error) {
-            showStatus(`Ошибка при чтении файла ${file.name}: ${error.message}`, 'error');
-          }
-        };
-        reader.readAsArrayBuffer(file);
-      });
-    }
-
-    function updateFileCard(fileNumber, fileName, uploaded) {
-      const card = document.getElementById(`file${fileNumber}Card`);
-      const nameEl = card.querySelector('.file-name');
-      const metaEl = document.getElementById(`file${fileNumber}Meta`);
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const nav = document.querySelector('nav ul');
       
-      nameEl.textContent = fileName;
-      metaEl.textContent = uploaded ? '✓ Загружен успешно' : 'Ожидание загрузки...';
-      
-      if (uploaded) {
-        card.classList.add('uploaded');
-      }
-    }
-
-    function showStatus(message, type) {
-      statusBar.textContent = message;
-      statusBar.className = `status-bar ${type}`;
-      statusBar.style.display = 'block';
-      setTimeout(() => {
-        statusBar.style.display = 'none';
-      }, 5000);
-    }
-
-    compareBtn.addEventListener('click', () => {
-      try {
-        compareBtn.innerHTML = '<span class="loading"></span><span>Сравнение...</span>';
-        compareBtn.disabled = true;
-
-        setTimeout(() => {
-          const results = compareFiles(file1Data, file2Data);
-          displayResults(results);
-          comparisonResults = results;
-          
-          compareBtn.innerHTML = '<span>🔍 Сравнить учебные планы</span>';
-          compareBtn.disabled = false;
-          
-          showStatus('Сравнение завершено успешно!', 'success');
-          downloadSection.style.display = 'block';
-        }, 500);
-      } catch (error) {
-        showStatus(`Ошибка при сравнении: ${error.message}`, 'error');
-        compareBtn.innerHTML = '<span>🔍 Сравнить учебные планы</span>';
-        compareBtn.disabled = false;
-      }
-    });
-
-    function compareFiles(file1, file2) {
-      const sheet1 = file1.workbook.Sheets['Б1'];
-      const sheet2 = file2.workbook.Sheets['Б1'];
-
-      if (!sheet1 || !sheet2) {
-        throw new Error('Один или оба файла не содержат лист "Б1"');
-      }
-
-      const data1 = XLSX.utils.sheet_to_json(sheet1, { header: 1 });
-      const data2 = XLSX.utils.sheet_to_json(sheet2, { header: 1 });
-
-      const subjects1 = parseSubjects(data1);
-      const subjects2 = parseSubjects(data2);
-
-      const categories = categorizeSubjects(subjects1, subjects2);
-
-      return {
-        file1Name: file1.name,
-        file2Name: file2.name,
-        categories: categories
-      };
-    }
-
-    function parseSubjects(data) {
-      const subjects = [];
-      let currentDepartment = '';
-
-      for (let i = 0; i < data.length; i++) {
-        const row = data[i];
-        
-        if (row[0] && typeof row[0] === 'string' && row[0].includes('Кафедра')) {
-          currentDepartment = row[0].replace('Кафедра', '').trim();
-          continue;
-        }
-
-        if (row[1] && row[2] && !isNaN(row[2])) {
-          subjects.push({
-            name: row[1],
-            hours: parseFloat(row[2]) || 0,
-            department: currentDepartment
-          });
-        }
-      }
-
-      return subjects;
-    }
-
-    function categorizeSubjects(subjects1, subjects2) {
-      const categories = {
-        math: { name: 'Математика', icon: '∑', subjects1: [], subjects2: [], matched: [] },
-        programming: { name: 'Программирование', icon: '{ }', subjects1: [], subjects2: [], matched: [] },
-        engineering: { name: 'Инженерия', icon: '⚙', subjects1: [], subjects2: [], matched: [] },
-        humanities: { name: 'Гуманитарные науки', icon: '📖', subjects1: [], subjects2: [], matched: [] }
-      };
-
-      const mathKeywords = ['математ', 'алгебр', 'геометр', 'анализ', 'теория вероятност', 'статистик'];
-      const programmingKeywords = ['программ', 'алгоритм', 'данн', 'базы данных', 'веб', 'python', 'java', 'c++', 'software'];
-      const engineeringKeywords = ['физик', 'механик', 'электр', 'схемотехник', 'инженер', 'техник'];
-      const humanitiesKeywords = ['философ', 'истор', 'культур', 'язык', 'литератур', 'социолог', 'психолог', 'экономик', 'правов'];
-
-      function categorizeSubject(subject) {
-        const nameLower = subject.name.toLowerCase();
-        
-        if (mathKeywords.some(kw => nameLower.includes(kw))) return 'math';
-        if (programmingKeywords.some(kw => nameLower.includes(kw))) return 'programming';
-        if (engineeringKeywords.some(kw => nameLower.includes(kw))) return 'engineering';
-        if (humanitiesKeywords.some(kw => nameLower.includes(kw))) return 'humanities';
-        
-        return 'humanities';
-      }
-
-      const subjectsMap2 = new Map(subjects2.map(s => [s.name.toLowerCase().trim(), s]));
-
-      subjects1.forEach(subject => {
-        const category = categorizeSubject(subject);
-        const normalizedName = subject.name.toLowerCase().trim();
-        
-        if (subjectsMap2.has(normalizedName)) {
-          const matchedSubject = subjectsMap2.get(normalizedName);
-          categories[category].matched.push({ subject1: subject, subject2: matchedSubject });
-          subjectsMap2.delete(normalizedName);
+      mobileMenuBtn.addEventListener('click', function() {
+        if (nav.style.display === 'flex') {
+          nav.style.display = 'none';
         } else {
-          categories[category].subjects1.push(subject);
+          nav.style.display = 'flex';
+          nav.style.flexDirection = 'column';
+          nav.style.position = 'absolute';
+          nav.style.top = '100%';
+          nav.style.left = '0';
+          nav.style.right = '0';
+          nav.style.background = '#002244';
+          nav.style.padding = '20px';
         }
       });
 
-      subjects2.forEach(subject => {
-        const normalizedName = subject.name.toLowerCase().trim();
-        if (subjectsMap2.has(normalizedName)) {
-          const category = categorizeSubject(subject);
-          categories[category].subjects2.push(subject);
+      document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            nav.style.display = 'none';
+          }
+        });
+      });
+
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+          header.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.2)';
+        } else {
+          header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
         }
       });
-
-      return categories;
-    }
-
-    function displayResults(results) {
-      resultsContainer.innerHTML = '';
-      resultsContainer.style.display = 'block';
-
-      Object.entries(results.categories).forEach(([key, category]) => {
-        const totalSubjects = category.matched.length + category.subjects1.length + category.subjects2.length;
-        if (totalSubjects === 0) return;
-
-        const categoryDiv = document.createElement('div');
-        categoryDiv.className = `category-block category-${key}`;
-        
-        categoryDiv.innerHTML = `
-          <div class="category-header">
-            <div class="category-icon">${category.icon}</div>
-            <div class="category-title">${category.name}</div>
-          </div>
-          
-          <div class="summary-total">
-            Всего дисциплин
-            <div class="summary-total-value">${totalSubjects}</div>
-          </div>
-
-          <div class="plans-comparison">
-            <div class="plan-column">
-              <div class="plan-header">${results.file1Name}</div>
-              ${renderSubjectsTable(category, 1)}
-            </div>
-            
-            <div class="plan-column">
-              <div class="plan-header">${results.file2Name}</div>
-              ${renderSubjectsTable(category, 2)}
-            </div>
-          </div>
-        `;
-
-        resultsContainer.appendChild(categoryDiv);
-      });
-    }
-
-    function renderSubjectsTable(category, fileNumber) {
-      let subjects = [];
-      
-      if (fileNumber === 1) {
-        subjects = [
-          ...category.matched.map(m => ({ ...m.subject1, matched: true })),
-          ...category.subjects1.map(s => ({ ...s, unique: true }))
-        ];
-      } else {
-        subjects = [
-          ...category.matched.map(m => ({ ...m.subject2, matched: true })),
-          ...category.subjects2.map(s => ({ ...s, unique: true }))
-        ];
-      }
-
-      if (subjects.length === 0) {
-        return '<div class="empty-state"><div class="empty-state-icon">📭</div>Нет дисциплин в этой категории</div>';
-      }
-
-      const totalHours = subjects.reduce((sum, s) => sum + (s.hours || 0), 0);
-
-      let html = `
-        <table class="subjects-table">
-          <thead>
-            <tr>
-              <th>Дисциплина</th>
-              <th style="text-align: right;">Часы</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      subjects.forEach(subject => {
-        const rowClass = subject.matched ? 'matched' : (subject.unique ? 'unique' : '');
-        html += `
-          <tr class="subject-row ${rowClass}">
-            <td>
-              <div class="subject-name">${subject.name}</div>
-              <div class="department-info">
-                <span class="department-badge">${subject.department || 'Не указана'}</span>
-                ${subject.department ? `
-                  <div class="tooltip">
-                    <div class="info-icon">i</div>
-                    <span class="tooltip-text">
-                      <strong>Кафедра:</strong> ${subject.department}<br>
-                      <strong>Часы:</strong> ${subject.hours}<br>
-                      ${subject.matched ? '<strong>Статус:</strong> Общая дисциплина' : '<strong>Статус:</strong> Уникальная дисциплина'}
-                    </span>
-                  </div>
-                ` : ''}
-              </div>
-            </td>
-            <td class="hours-cell">${subject.hours}</td>
-          </tr>
-        `;
-      });
-
-      html += `
-          </tbody>
-        </table>
-        <div class="summary-total" style="margin-top: 16px;">
-          <strong>Итого часов:</strong>
-          <div class="summary-total-value">${totalHours}</div>
-        </div>
-      `;
-
-      return html;
-    }
-
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-      if (!comparisonResults) return;
-
-      const wb = XLSX.utils.book_new();
-
-      Object.entries(comparisonResults.categories).forEach(([key, category]) => {
-        const wsData = [];
-        
-        wsData.push([category.name]);
-        wsData.push([]);
-        wsData.push(['Общие дисциплины']);
-        wsData.push(['Дисциплина', 'Часы (Файл 1)', 'Часы (Файл 2)', 'Кафедра (Файл 1)', 'Кафедра (Файл 2)']);
-        
-        category.matched.forEach(m => {
-          wsData.push([
-            m.subject1.name,
-            m.subject1.hours,
-            m.subject2.hours,
-            m.subject1.department || '',
-            m.subject2.department || ''
-          ]);
-        });
-
-        wsData.push([]);
-        wsData.push([`Уникальные для ${comparisonResults.file1Name}`]);
-        wsData.push(['Дисциплина', 'Часы', 'Кафедра']);
-        
-        category.subjects1.forEach(s => {
-          wsData.push([s.name, s.hours, s.department || '']);
-        });
-
-        wsData.push([]);
-        wsData.push([`Уникальные для ${comparisonResults.file2Name}`]);
-        wsData.push(['Дисциплина', 'Часы', 'Кафедра']);
-        
-        category.subjects2.forEach(s => {
-          wsData.push([s.name, s.hours, s.department || '']);
-        });
-
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, category.name.substring(0, 31));
-      });
-
-      XLSX.writeFile(wb, 'Сравнение_учебных_планов.xlsx');
-      showStatus('Файл успешно скачан!', 'success');
     });
   </script>
 </body>
